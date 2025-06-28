@@ -120,3 +120,113 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Print styles for resume */
+@media print {
+  /* Hide navigation and non-essential elements */
+  header,
+  nav,
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Remove download button when printing */
+  button {
+    display: none !important;
+  }
+  
+  /* Optimize page layout for printing */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.4;
+  }
+  
+  /* Ensure good page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+  
+  .page-break-after {
+    page-break-after: always;
+  }
+  
+  .no-page-break {
+    page-break-inside: avoid;
+  }
+  
+  /* Adjust container for print */
+  .container {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  /* Optimize spacing for print */
+  .space-y-12 > * + * {
+    margin-top: 1.5rem !important;
+  }
+  
+  /* Ensure colors are print-friendly */
+  .bg-gradient-to-r {
+    background: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+  }
+  
+  /* Make skill tags more readable */
+  .bg-blue-100,
+  .bg-green-100,
+  .bg-purple-100,
+  .bg-gray-100 {
+    background: #f8f9fa !important;
+    border: 1px solid #dee2e6 !important;
+    color: black !important;
+  }
+  
+  /* Adjust shadow and rounded corners for print */
+  .shadow-sm,
+  .shadow-lg {
+    box-shadow: none !important;
+    border: 1px solid #dee2e6 !important;
+  }
+  
+  .rounded-lg,
+  .rounded-xl {
+    border-radius: 4px !important;
+  }
+  
+  /* Ensure links are visible */
+  a {
+    color: black !important;
+    text-decoration: underline !important;
+  }
+  
+  /* Profile image adjustments */
+  .w-32.h-32,
+  .w-24.h-24 {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  /* Responsive text adjustments */
+  .text-3xl,
+  .text-4xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-xl,
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Adjust grid layouts for print */
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Simplify all grids to single column for print */
+  [class*="grid-cols"] {
+    grid-template-columns: 1fr !important;
+  }
+}

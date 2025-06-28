@@ -5,28 +5,46 @@ import { cn } from '@/lib/utils'
 
 export function GoToTop() {
   const [isVisible, setIsVisible] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (!mounted) return
+
     const toggleVisibility = () => {
-      if (window.scrollY > 800) {
+      if (typeof window !== 'undefined' && window.scrollY > 800) {
         setIsVisible(true)
       } else {
         setIsVisible(false)
       }
     }
 
-    window.addEventListener('scroll', toggleVisibility)
+    // Check initial scroll position
+    toggleVisibility()
 
-    return () => {
-      window.removeEventListener('scroll', toggleVisibility)
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', toggleVisibility)
+      return () => {
+        window.removeEventListener('scroll', toggleVisibility)
+      }
     }
-  }, [])
+  }, [mounted])
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    })
+    if (typeof window !== 'undefined') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      })
+    }
+  }
+
+  // Don't render until mounted to prevent hydration mismatch
+  if (!mounted) {
+    return null
   }
 
   return (

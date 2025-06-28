@@ -10,10 +10,11 @@ export function absoluteUrl(path: string) {
 }
 
 export function formatDate(date: string) {
-  const [year, month, day] = new Date(date).toLocaleDateString('zh-CN', {
+  // Use UTC timezone to ensure consistent formatting between server and client
+  return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'numeric',
-    day: 'numeric'
-  }).split('/');
-  return `${year}年${month}月${day}日`;
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC'
+  });
 }

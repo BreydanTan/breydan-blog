@@ -1,19 +1,19 @@
 ---
-title: Markdown 基本用法
+title: Basic Markdown Usage
 date: 2025-04-05T20:10:00+08:00
 updated: 2025-04-05T20:10:00+08:00
 keywords: ["hello", "world"]
 featured: true
-summary: "这篇文章包含markdown语法基本的内容。"
+summary: "This article covers the basics of Markdown syntax."
 ---
 
-这篇文章包含markdown语法基本的内容。
+This article covers the basics of Markdown syntax.
 
-在markdown里可以使用 \ 对特殊符号进行转义。  
+In Markdown, you can use \ to escape special characters.
 
-# 1. 标题
+# 1. Headings
 
-**语法**
+**Syntax**
 ```md
 # This is an <h1> tag
 ## This is an <h2> tag
@@ -21,16 +21,16 @@ summary: "这篇文章包含markdown语法基本的内容。"
 #### This is an <h4> tag
 ```
 
-**实例**
+**Example**
 
 # This is an h1 tag
 ## This is an h2 tag
 ### This is an h3 tag
 #### This is an h4 tag
 
-# 2. 强调和斜体
+# 2. Emphasis and Italic
 
-**语法**
+**Syntax**
 ```md
 *This text will be italic*
 _This will also be italic_
@@ -39,7 +39,7 @@ _This will also be italic_
 __This will also be bold__
 ```
 
-**实例**
+**Example**
 
 *This text will be italic*
 _This will also be italic_
@@ -47,9 +47,9 @@ _This will also be italic_
 **This text will be bold**
 __This will also be bold__
 
-# 3. 有序列表和无序列表
+# 3. Ordered and Unordered Lists
 
-**语法**
+**Syntax**
 ```md
 * Item 1
 * Item 2
@@ -60,7 +60,7 @@ __This will also be bold__
 3. Item 3
 ```
 
-**实例**
+**Example**
 * Item 1
 * Item 2
 * Item 3
@@ -69,53 +69,53 @@ __This will also be bold__
 2. Item 2
 3. Item 3
 
-# 4. 图片
+# 4. Images
 
-**语法**
+**Syntax**
 ```
 ![img-name](img-url)
 ```
 
-**实例**
-![微信公众号](https://storage.guangzhengli.com/images/wechat-official-account.png)
+**Example**
+![WeChat Official Account](https://storage.guangzhengli.com/images/wechat-official-account.png)
 
-# 5. 超链接
+# 5. Hyperlinks
 
-**语法**
+**Syntax**
 ```
 [link-name](link-url)
 ```
 
-**实例**
+**Example**
 
-[微信公众号链接](https://storage.guangzhengli.com/images/wechat-official-account.png)
+[WeChat Official Account Link](https://storage.guangzhengli.com/images/wechat-official-account.png)
 
-# 6. 引用
+# 6. Blockquotes
 
-**语法**
+**Syntax**
 ```md
-> 引用本意是引用别人的话之类  
+> The original meaning of a quote is to quote someone else'''s words.
 ```
 
-**实例**
+**Example**
 
-> If you please draw me a sheep!  
-> 不想当将军的士兵, 不是好士兵.  
+> If you please draw me a sheep!
+> A soldier who does not want to be a general is not a good soldier.
 
-# 7. 单行代码
+# 7. Inline Code
 
-**语法**
+**Syntax**
 ```
 `This is an inline code.`
 ```
 
-**实例**
+**Example**
 
-`同样的单行代码, 我经常用来显示特殊名词`
+`I often use inline code to display special nouns.`
 
-# 8. 多行代码
+# 8. Code Blocks
 
-**语法**
+**Syntax**
 
 ```md
 ​```js
@@ -125,7 +125,7 @@ for (var i=0; i<100; i++) {
 ​```
 ```
 
-**实例**
+**Example**
 
 ```js
 for (var i=0; i<100; i++) {
@@ -133,11 +133,11 @@ for (var i=0; i<100; i++) {
 }
 ```
 
-也可以通过缩进来显示代码, 下面是示例:  
+You can also display code by indenting, as shown in the example below:
 
     console.loe("Hello_World");
 
-# 9. 表格
+# 9. Tables
 
 ## Table
 
@@ -147,7 +147,7 @@ for (var i=0; i<100; i++) {
 | Division 1 | Division 2 | Division 3 |
 | Division 1 | Division 2 | Division 3 |
 
-# 参考链接
+# References
 
-- https://guides.github.com/features/mastering-markdown/  
+- https://guides.github.com/features/mastering-markdown/
 - https://help.github.com/articles/basic-writing-and-formatting-syntax/

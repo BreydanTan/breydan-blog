@@ -1,10 +1,10 @@
-<h1 align=center>Nextjs Blog Template | Ladder Theme | <a href="https://guangzhengli.com">Blog</a></h1>
+<h1 align=center>Next.js Blog Template | Ladder Theme | <a href="https://guangzhengli.com">Blog</a></h1>
 
-本仓库是 [hugo-ladder-theme](https://github.com/guangzhengli/hugo-theme-ladder) 的 Nextjs 实现。
+This repository is a Next.js implementation of [hugo-ladder-theme](https://github.com/guangzhengli/hugo-theme-ladder).
 
-这是一个 Nextjs 博客模板，下面介绍这个模板的一些基本用法。
+This is a Next.js blog template. Here are some basic instructions on how to use it.
 
-## 如何本地进行开发？
+## How to develop locally?
 
 ```bash
 npm install
@@ -13,49 +13,49 @@ npm install
 npm run dev
 ```
 
-## 如何部署
+## How to deploy
 
-Clone 或者 fork 到本地，按照下面的方式修改配置，然后在 [Vercel](https://vercel.com) 选择该仓库进行部署。
+Clone or fork this repository locally, modify the configuration as described below, and then deploy it on [Vercel](https://vercel.com) by selecting this repository.
 
-部署的配置所有选择默认即可，不需要进行特殊配置。
+All deployment configurations can be left at their default settings; no special configuration is needed.
 
-如果你需要使用 edge 或者 fluid compute，请自行修改代码或者 vercel 配置。
+If you need to use edge or fluid compute, please modify the code or Vercel configuration yourself.
 
-# 博客配置
+# Blog Configuration
 
-## 1. 如何编写博客
+## 1. How to write a blog post
 
-这个仓库的博客文件需要放在 `src/content/blog` 目录下，可以是 markdown 文件，也可以是 mdx 文件。
+Blog files for this repository should be placed in the `src/content/blog` directory. They can be Markdown or MDX files.
 
-有以下这些元数据需要用户自行根据需要进行配置：
+The following metadata needs to be configured by the user as needed:
 
-- `title`: 博客标题
-- `date`: 博客发布日期
-- `updated`: 博客更新日期
-- `keywords`: 博客关键词，优化 SEO
-- `featured`: 是否放在首页
-- `summary`: 博客摘要
+- `title`: Blog post title
+- `date`: Blog post publication date
+- `updated`: Blog post update date
+- `keywords`: Blog post keywords for SEO optimization
+- `featured`: Whether to feature on the homepage
+- `summary`: Blog post summary
 
-## 2. 博客配置
+## 2. Blog Configuration
 
-博客的所有配置都集中在 `src/lib/config.ts` 文件中，这样做的好处是：
+All blog configurations are centralized in the `src/lib/config.ts` file. The advantages of this are:
 
-1. 集中管理：所有配置都在一个文件中，方便维护和修改
-2. 类型安全：使用 TypeScript 可以获得类型检查和自动补全
-3. 复用性：避免重复的配置散落在各个文件中
-4. 一致性：确保所有地方使用相同的配置值
+1.  **Centralized Management**: All configurations are in one file, making it easy to maintain and modify.
+2.  **Type Safety**: Using TypeScript provides type checking and autocompletion.
+3.  **Reusability**: Avoids scattering duplicate configurations across various files.
+4.  **Consistency**: Ensures the same configuration values are used everywhere.
 
-### 2.1 站点基本配置
+### 2.1 Basic Site Configuration
 
 ```typescript
 site: {
-  title: "你的博客标题",
-  name: "你的博客名称",
-  description: "博客描述",
-  keywords: ["关键词1", "关键词2"],
-  url: "https://你的域名.com",
-  baseUrl: "https://你的域名.com",
-  image: "https://你的域名.com/og-image.png",
+  title: "Your Blog Title",
+  name: "Your Blog Name",
+  description: "Blog description",
+  keywords: ["keyword1", "keyword2"],
+  url: "https://your-domain.com",
+  baseUrl: "https://your-domain.com",
+  image: "https://your-domain.com/og-image.png",
   favicon: {
     ico: "/favicon.ico",
     png: "/favicon.png",
@@ -66,106 +66,106 @@ site: {
 }
 ```
 
-这些配置用于：
-- 网站的基本信息展示
-- SEO 优化
-- 浏览器标签页图标
-- 社交媒体分享预览
+These configurations are used for:
+- Displaying basic website information
+- SEO optimization
+- Browser tab icon
+- Social media sharing previews
 
-### 2.2 作者信息配置
+### 2.2 Author Information Configuration
 
 ```typescript
 author: {
-  name: "你的名字",
-  email: "你的邮箱",
-  bio: "个人简介",
+  name: "Your Name",
+  email: "your-email",
+  bio: "Personal bio",
 }
 ```
 
-作者信息会用于：
-- 首页展示
-- RSS 订阅源信息
-- 博客文章的作者信息
+Author information will be used for:
+- Homepage display
+- RSS feed information
+- Author information in blog posts
 
-### 2.3 社交媒体配置
+### 2.3 Social Media Configuration
 
 ```typescript
 social: {
-  github: "https://github.com/你的用户名",
-  x: "https://x.com/你的用户名",
-  xiaohongshu: "https://www.xiaohongshu.com/user/profile/你的ID",
-  wechat: "你的微信二维码图片链接",
-  buyMeACoffee: "https://www.buymeacoffee.com/你的用户名",
+  github: "https://github.com/your-username",
+  x: "https://x.com/your-username",
+  xiaohongshu: "https://www.xiaohongshu.com/user/profile/your-id",
+  wechat: "your-wechat-qr-code-image-link",
+  buyMeACoffee: "https://www.buymeacoffee.com/your-username",
 }
 ```
 
-这些链接会显示在：
-- 首页的社交媒体链接区域
-- 导航栏的社交媒体图标
+These links will be displayed in:
+- The social media links section on the homepage
+- Social media icons in the navigation bar
 
-### 2.4 评论系统配置
+### 2.4 Comment System Configuration
 
 ```typescript
 giscus: {
-  repo: "你的GitHub仓库名",
-  repoId: "仓库ID",
-  categoryId: "分类ID",
+  repo: "your-github-repo-name",
+  repoId: "repository-ID",
+  categoryId: "category-ID",
 }
 ```
 
-使用 Giscus 作为评论系统，需要：
-1. 在 GitHub 上安装 Giscus 应用
-2. 在你的仓库中启用 Discussions
-3. 获取配置信息并填入这里
+To use Giscus as the comment system, you need to:
+1.  Install the Giscus app on GitHub
+2.  Enable Discussions in your repository
+3.  Get the configuration information and fill it in here
 
-### 2.5 导航菜单配置
+### 2.5 Navigation Menu Configuration
 
 ```typescript
 navigation: {
   main: [
     { 
-      title: "文章", 
+      title: "Blog", 
       href: "/blog",
     },
-    // 可以添加更多导航项
+    // You can add more navigation items
   ],
 }
 ```
 
-这里配置网站的导航菜单，支持：
-- 普通链接
-- 带子菜单的下拉菜单
+This is where you configure the website's navigation menu. It supports:
+- Regular links
+- Dropdown menus with sub-items
 
-### 2.6 SEO 配置
+### 2.6 SEO Configuration
 
 ```typescript
 seo: {
-  metadataBase: new URL("https://你的域名.com"),
+  metadataBase: new URL("https://your-domain.com"),
   alternates: {
     canonical: './',
   },
   openGraph: {
     type: "website" as const,
-    locale: "zh_CN",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image" as const,
-    creator: "@你的推特用户名",
+    creator: "@your-twitter-handle",
   },
 }
 ```
 
-这些配置用于：
-- 搜索引擎优化
-- 社交媒体分享卡片
-- 网站元数据
+These configurations are used for:
+- Search engine optimization
+- Social media share cards
+- Website metadata
 
-### 2.7 RSS 订阅配置
+### 2.7 RSS Feed Configuration
 
 ```typescript
 rss: {
-  title: "你的博客标题",
-  description: "博客描述",
+  title: "Your Blog Title",
+  description: "Blog description",
   feedLinks: {
     rss2: "/rss.xml",
     json: "/feed.json",
@@ -174,39 +174,39 @@ rss: {
 }
 ```
 
-这些配置用于生成：
-- RSS 2.0 订阅源
+These configurations are used to generate:
+- RSS 2.0 feed
 - JSON Feed
-- Atom 订阅源
+- Atom feed
 
-## 3. 如何修改配置
+## 3. How to Modify the Configuration
 
-1. 打开 `src/lib/config.ts` 文件
-2. 根据你的需求修改相应的配置项
-3. 保存文件后，Next.js 会自动重新构建并应用新的配置
+1.  Open the `src/lib/config.ts` file
+2.  Modify the corresponding configuration items according to your needs
+3.  After saving the file, Next.js will automatically rebuild and apply the new configuration
 
-注意事项：
-- 确保所有 URL 都是有效的
-- 图片链接应该是可访问的
-- 社交媒体链接要填写完整的 URL
-- 配置修改后，建议检查网站的：
-  - 首页展示
-  - 导航菜单
-  - SEO 信息
-  - 社交媒体分享效果
-  - RSS 订阅源
+Notes:
+- Ensure all URLs are valid
+- Image links should be accessible
+- Social media links must be complete URLs
+- After modifying the configuration, it is recommended to check the website's:
+  - Homepage display
+  - Navigation menu
+  - SEO information
+  - Social media sharing effectiveness
+  - RSS feed
 
-## 4. 如何生成 RSS 订阅源
+## 4. How to Generate the RSS Feed
 
-修改 scripts/generate-rss.js 文件中的配置，然后运行：
+Modify the configuration in the `scripts/generate-rss.js` file, then run:
 
 ```bash
 npm run generate-rss
 ```
 
-## 5. 如何生成 Sitemap
+## 5. How to Generate the Sitemap
 
-修改 scripts/generate-sitemap.js 文件中的配置，然后运行：
+Modify the configuration in the `scripts/generate-sitemap.js` file, then run:
 
 ```bash
 npm run generate-sitemap

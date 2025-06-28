@@ -40,8 +40,13 @@ export function DashboardTableOfContents({ toc }: TocProps) {
 
 function useActiveItem(itemIds: string[]) {
   const [activeId, setActiveId] = React.useState(null)
+  const mounted = useMounted()
 
   React.useEffect(() => {
+    if (!mounted || typeof window === 'undefined' || !window.IntersectionObserver) {
+      return
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -54,21 +59,25 @@ function useActiveItem(itemIds: string[]) {
     )
 
     itemIds?.forEach((id) => {
-      const element = document.getElementById(id)
-      if (element) {
-        observer.observe(element)
+      if (typeof document !== 'undefined') {
+        const element = document.getElementById(id)
+        if (element) {
+          observer.observe(element)
+        }
       }
     })
 
     return () => {
-      itemIds?.forEach((id) => {
-        const element = document.getElementById(id)
-        if (element) {
-          observer.unobserve(element)
-        }
-      })
+      if (typeof document !== 'undefined') {
+        itemIds?.forEach((id) => {
+          const element = document.getElementById(id)
+          if (element) {
+            observer.unobserve(element)
+          }
+        })
+      }
     }
-  }, [itemIds])
+  }, [itemIds, mounted])
 
   return activeId
 }

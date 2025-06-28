@@ -29,7 +29,7 @@ export default function BlogPage() {
                     {blog.title}
                   </h2>
                   <span className="text-sm text-gray-500">
-                    {formatDate(blog.date)} · {count(blog.content)} 字
+                    {formatDate(blog.date)} · {count(blog.content)} words
                   </span>
                 </div>
                 <p className="text-gray-600 line-clamp-2">
