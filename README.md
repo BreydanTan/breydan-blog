@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <h1 align=center>Next.js Blog Template | Ladder Theme | <a href="https://guangzhengli.com">Blog</a></h1>
 
 This repository is a Next.js implementation of [hugo-ladder-theme](https://github.com/guangzhengli/hugo-theme-ladder).
@@ -211,3 +212,7 @@ Modify the configuration in the `scripts/generate-sitemap.js` file, then run:
 ```bash
 npm run generate-sitemap
 ```
+=======
+# breydan-blog
+personal blog
+>>>>>>> e70e1f9c6f8ea2a735a9075ad4517cafecafe490
