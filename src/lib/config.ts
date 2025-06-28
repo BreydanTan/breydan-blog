@@ -5,7 +5,7 @@ export const config = {
     description: "This is a personal blog for Breydan tan",
     keywords: ["SAAS", "AI", "Full Stack Developer"],
     url: "https://blog.breydan.com",
-    baseUrl: "https://breydan.com",
+    baseUrl: "https://blog.breydan.com",
     image: "https://media.licdn.com/dms/image/v2/D5603AQHccINn9TI4Kg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1716282280243?e=1756339200&v=beta&t=KbxNTy4l_8Q5NdEGBXY39cpofDZagj_M-GKeWkShC78",
     favicon: {
       ico: "/favicon.ico",
@@ -30,12 +30,12 @@ export const config = {
     bio: "Support Engineer at One Empower ptd ltd. Self-learning Front-end development and sharing my journey through this blog.",
   },
   social: {
-    github: "https://github.com/BraydenTan",
+    github: "https://github.com/BreydanTan",
     x: "https://x.com/BreydanT94338",
     linkedin: "https://www.linkedin.com/in/breydan/",
   },
   giscus: {
-    repo: "BraydenTan/nextjs-blog-template",
+    repo: "BreydanTan/nextjs-blog-template",
     repoId: "YOUR_REPO_ID",
     categoryId: "YOUR_CATEGORY_ID",
   },

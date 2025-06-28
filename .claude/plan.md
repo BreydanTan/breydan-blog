@@ -50,7 +50,7 @@ git push origin main
 4. Update `src/lib/config.ts`:
    ```typescript
    giscus: {
-     repo: "BraydenTan/nextjs-blog-template",
+     repo: "BreydanTan/nextjs-blog-template",
      repoId: "YOUR_ACTUAL_REPO_ID",
      categoryId: "YOUR_ACTUAL_CATEGORY_ID",
    }
@@ -188,12 +188,12 @@ ls public/rss.xml public/feed.json public/atom.xml public/sitemap.xml
 ## 🔗 Important Links & Resources
 
 - **Live Blog**: [To be deployed]
-- **GitHub Repo**: https://github.com/BraydenTan/nextjs-blog-template
+- **GitHub Repo**: https://github.com/BreydanTan/nextjs-blog-template
 - **Current Projects**:
   - ReadSmart Today: https://www.readsmart.today
   - SAAS Roadmap: [In development]
 - **Social Profiles**:
-  - GitHub: https://github.com/BraydenTan
+  - GitHub: https://github.com/BreydanTan
   - LinkedIn: https://www.linkedin.com/in/breydan/
   - X (Twitter): https://x.com/BreydanT94338
   - Email: breydantech@gmail.com

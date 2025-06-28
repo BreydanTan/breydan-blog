@@ -1,4 +1,6 @@
 import type { MetadataRoute } from 'next'
+
+export const dynamic = 'force-static'
  
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/'],
     },
-    sitemap: 'https://xxx.com/sitemap.xml',
+    sitemap: 'https://blog.breydan.com/sitemap.xml',
   }
 }
