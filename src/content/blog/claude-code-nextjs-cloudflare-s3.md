@@ -8,6 +8,8 @@ summary: "A comprehensive guide on how I leveraged Claude Code, Anthropic's AI c
 ---
 ## Overview
 
+![Claude Code Next js Cladflare s3](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/claudecode.png)
+
 This guide shows how I used Claude Code to migrate my Next.js blog from Vercel to Cloudflare Workers and set up AWS S3 for image storage. The result: better performance and lower costs.
 
 ## Why Claude Code?
