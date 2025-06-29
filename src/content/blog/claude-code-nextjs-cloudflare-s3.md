@@ -6,8 +6,6 @@ keywords: ["Claude Code", "Next.js", "Cloudflare Workers", "S3", "AI Development
 featured: true
 summary: "A comprehensive guide on how I leveraged Claude Code, Anthropic's AI coding assistant, to seamlessly deploy my Next.js blog to Cloudflare Workers and integrate AWS S3 for optimized image storage."
 ---
-# How I Used Claude Code to Deploy My Next.js Blog to Cloudflare Workers and S3
-
 ## Overview
 
 This guide shows how I used Claude Code to migrate my Next.js blog from Vercel to Cloudflare Workers and set up AWS S3 for image storage. The result: better performance and lower costs.
@@ -178,6 +176,8 @@ To improve the Lighthouse Best Practices score, Claude Code helped implement sev
 The build process was streamlined to generate static files, sync images to S3, and deploy to Cloudflare Pages in a single command.
 
 ## Results
+
+![Lighthouse Performance Score](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/score.jpg)
 
 ### Performance Improvements
 - **Global CDN** - Fast loading worldwide through Cloudflare's network
