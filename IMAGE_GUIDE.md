@@ -60,11 +60,55 @@ cp my-diagram.png public/images/blog/saas-techstack/
 4. **Dark mode friendly**: Consider how images look in both themes
 5. **Mobile responsive**: Images automatically scale on mobile
 
+## S3 Integration (Recommended)
+
+### Setup (One-time)
+1. ✅ S3 bucket configured: `elasticbeanstalk-ap-southeast-1-733447040549`
+2. Ensure AWS CLI is configured: `aws configure`
+3. ✅ Auto-set public read permissions for all uploaded images
+
+### Your Complete Workflow
+
+#### For Blog Post Images:
+```bash
+# 1. Add image to correct folder
+cp my-image.png public/images/blog/my-post-name/
+
+# 2. Sync to S3 with public permissions
+npm run sync-images
+
+# 3. Use FULL S3 URL in markdown (include https:// and .s3.region.amazonaws.com)
+![Description](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/my-post-name/my-image.png)
+```
+
+#### For Site Images (Avatar, Icons, etc):
+```bash
+# 1. Add to appropriate folder
+cp avatar.png public/images/author/
+# or
+cp icon.png public/images/icons/
+
+# 2. Sync to S3
+npm run sync-images
+
+# 3. Use in components
+src="https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/author/avatar.png"
+```
+
+#### Quick Reference:
+- **Your S3 Base URL**: `https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/`
+- **Local to S3 Mapping**: `public/images/` → `s3://bucket/blog/`
+- **Auto-public**: All synced images get public read permissions
+- **Sync Command**: `npm run sync-images`
+
 ## Quick Commands
 
 ```bash
 # Add image to specific blog post
 cp image.png public/images/blog/[post-name]/
+
+# Sync all images to S3
+npm run sync-images
 
 # Deploy with new images
 npm run deploy

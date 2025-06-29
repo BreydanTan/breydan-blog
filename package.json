@@ -10,6 +10,7 @@
     "lint": "next lint",
     "generate-sitemap": "node scripts/generate-sitemap.js",
     "generate-rss": "node scripts/generate-rss.js",
+    "sync-images": "aws s3 sync public/images s3://elasticbeanstalk-ap-southeast-1-733447040549/blog --delete --acl public-read",
     "build:cloudflare": "next build && npx @opennextjs/cloudflare@latest build",
     "deploy": "npm run build && wrangler pages deploy out --project-name=nextjs-blog-template"
   },

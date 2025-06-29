@@ -8,7 +8,7 @@ export default function AboutPage() {
       <div className="prose prose-lg mx-auto max-w-none">
         <div className="text-center mb-8 sm:mb-12">
           <Image
-            src="https://media.licdn.com/dms/image/v2/D5603AQHccINn9TI4Kg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1716282280243"
+            src="https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/avatar.png"
             alt="Breydan Tan"
             width={128}
             height={128}

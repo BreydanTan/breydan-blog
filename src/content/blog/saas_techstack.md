@@ -63,6 +63,8 @@ Based on real-world experience, a better approach is using OpenNext.js to deploy
 | **Radix UI** | Unstyled, fully customizable | Design system building | ⭐⭐⭐ | ⭐⭐⭐⭐ |
 | **Chakra UI** | Simple to use, themeable | Small projects, MVPs | ⭐⭐⭐ | ⭐⭐⭐ |
 
+![UI Libraries](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/UIComponentLibraries.png)
+
 **TailwindCSS's Unique Value**:
 - **AI-friendly**: Works exceptionally well with ChatGPT and GitHub Copilot
 - **Consistency**: Avoids CSS conflicts and naming issues
@@ -84,6 +86,8 @@ In 2025, AI integration has shifted from "nice to have" to "must have." Indie de
 | **OpenAI** | General chat, creative generation | 💰💰💰 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | **Anthropic** | Complex reasoning, safety | 💰💰 | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
 | **Cloudflare Workers AI** | Edge inference, privacy protection | 💰 | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+
+![AI Provider](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/provider.png)
 
 ### AI Feature Development Patterns
 
@@ -159,6 +163,8 @@ In 2025, AI integration has shifted from "nice to have" to "must have." Indie de
 | Fastify | ~50ms | ~30MB | 200KB+ | ⭐⭐ |
 | Next.js API | ~200ms | ~80MB | 1MB+ | ⭐⭐⭐ |
 
+
+![AI Provider](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/performance.png)
 ### Hybrid Architecture Strategy
 
 **Service Distribution Strategy**:
@@ -434,6 +440,7 @@ Indie development in 2025 has evolved from "choosing the right tools" to "buildi
 3. **Observability**: Emphasize AI application monitoring and cost control
 4. **Type safety**: Maintain code quality during rapid iteration
 
+
 ### 🛠️ 2025 Recommended Tech Stacks (Complete Update)
 
 #### **Golden Combination (Complete AI SaaS Stack)**
@@ -450,6 +457,7 @@ Monitoring: Sentry + LogRocket + Helicone
 Payment: Creem.io (individual developers) / Stripe (enterprise)
 No-Code AI: Stack AI + Zapier AI (workflow automation)
 ```
+![Golden Combination Tech Stack](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/goldencombination.png)
 
 #### **Cost-Effective Combination (MVP Projects)**
 ```
@@ -463,6 +471,7 @@ Analytics: Plausible (self-hosted) / Umami
 Storage: Cloudflare R2
 Payment: Creem.io
 ```
+![Cost Effective](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/costeffectivetechstack.png)
 
 #### **Enterprise Combination (B2B SaaS)**
 ```
@@ -476,42 +485,7 @@ Analytics: Professional analytics + complete AI monitoring stack
 Observability: Helicone + Sentry + custom dashboards
 Compliance: Audit logs + data governance + explainable AI
 ```
-
-### 🎯 Action Plan: From 0 to AI Product
-
-#### **Week 1: AI Infrastructure**
-- [ ] Choose AI tech stack (recommended: Vercel AI SDK + Together AI)
-- [ ] Set up basic chat interface
-- [ ] Integrate cost monitoring (Helicone)
-- [ ] Implement user authentication (Clerk)
-
-#### **Month 1: Core AI Features**
-- [ ] Develop main AI functionality (text generation/analysis, etc.)
-- [ ] Implement user tiers and usage limits
-- [ ] Add vector search capabilities (Neon + pgvector)
-- [ ] Set up monitoring and error tracking
-
-#### **Month 3: Optimization & Expansion**
-- [ ] Optimize AI response quality and speed
-- [ ] Implement multimodal features (images, documents, etc.)
-- [ ] Perfect user analytics and feedback loops
-- [ ] Prepare commercialization and paid features
-
-### 💡 Key Pitfall Guide
-
-#### **Technology Choices**
-- ❌ Avoid using Cloudflare Pages for complex Next.js applications
-- ❌ Don't ignore AI cost monitoring and budget management
-- ❌ Avoid premature optimization, first validate AI feature actual value
-- ✅ Prioritize platforms with strong AI ecosystems
-
-#### **Product Strategy**
-- ❌ Don't treat AI as purely technical features
-- ❌ Avoid undifferentiated general AI assistants
-- ✅ Focus on solving specific domain actual problems
-- ✅ Emphasize user experience and response speed
-
-### 🌟 Final Recommendations
+![Enterprise Tech Stack](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/enterprisetechstack.png)
 
 **Embrace the AI Era, But Stay Rational**:
 - AI is a tool, not the purpose. Focus on creating real value for users
