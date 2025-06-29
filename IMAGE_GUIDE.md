@@ -91,6 +91,9 @@ cp icon.png public/images/icons/
 # 2. Sync to S3
 npm run sync-images
 
+#2.1 deploy
+npm run deploy
+
 # 3. Use in components
 src="https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/author/avatar.png"
 ```
@@ -113,3 +116,24 @@ npm run sync-images
 # Deploy with new images
 npm run deploy
 ```
+
+⏺ A sitemap is an XML file that tells search engines (Google, Bing, etc.) about all the pages on your website. It helps
+  search engines:
+
+  1. Discover pages - Find all your blog posts automatically
+  2. Index faster - Know when content was updated
+  3. Understand structure - See page priorities and update frequencies
+  4. Improve SEO - Better search engine visibility
+
+  Do you need to run it every time?
+
+  Manual approach: Yes, currently you'd run npm run generate-sitemap each time you add a new blog post.
+
+  Better approach: You can automate it by:
+  - Adding it to your build process
+  - Using Next.js dynamic sitemap (which this project already supports via src/app/sitemap.ts)
+
+  The current setup generates a static sitemap file, but Next.js can generate it dynamically during build, so search
+  engines always see your latest content without manual regeneration.
+
+  For production, consider adding npm run generate-sitemap to your deployment pipeline.

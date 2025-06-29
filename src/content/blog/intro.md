@@ -1,199 +1,52 @@
 ---
-title: Introduction to Using the Blog Template
+title: "Welcome to My Digital Journey: From Enterprise Support to AI-First Development"
 date: 2025-04-05T21:10:00+08:00
-updated: 2025-04-05T21:10:00+08:00
-keywords: ["hello", "world"]
+updated: 2025-06-29T10:00:00+08:00
+keywords: ["personal journey", "AI development", "full stack", "enterprise", "indie developer", "career transition"]
 featured: true
-summary: "This is a Next.js blog template. This article will introduce some of its basic uses."
+summary: "Join me on my journey from enterprise support engineer to AI-powered full-stack developer. Discover how I'm building the future of SaaS while sharing practical insights along the way."
 ---
 
-This is a Next.js blog template. This article will introduce some of its basic uses.
+# Welcome to My Digital Journey 👋
 
-## 1. How to Write a Blog Post
+Hey there! I'm Breydan, and this is where my passion for technology meets real-world impact. If you're curious about the intersection of enterprise-grade systems and cutting-edge AI development, you've found the right place.
 
-Blog files for this repository should be placed in the `src/content/blog` directory. They can be Markdown or MDX files.
+## From Support Engineer to Full-Stack Builder
 
-The following metadata needs to be configured by the user as needed:
+By day, I'm navigating the complexities of enterprise Java applications at One Empower, supporting multi-region banking systems that serve thousands of users. By night (and weekends), I'm crafting AI-powered SaaS applications that push the boundaries of what's possible with modern web technologies.
 
-- `title`: Blog post title
-- `date`: Blog post publication date
-- `updated`: Blog post update date
-- `keywords`: Blog post keywords for SEO optimization
-- `featured`: Whether to feature on the homepage
-- `summary`: Blog post summary
+This unique perspective—bridging enterprise reliability with indie innovation—shapes everything I build and share here.
 
-## 2. Blog Configuration
+### What Drives Me
 
-All blog configurations are centralized in the `src/lib/config.ts` file. The advantages of this are:
+**🚀 Building Real Solutions**: Currently shipping [ReadSmart Today](https://www.readsmart.today), an AI-powered book summary platform that transforms how people consume knowledge.
 
-1.  **Centralized Management**: All configurations are in one file, making it easy to maintain and modify.
-2.  **Type Safety**: Using TypeScript provides type checking and autocompletion.
-3.  **Reusability**: Avoids scattering duplicate configurations across various files.
-4.  **Consistency**: Ensures the same configuration values are used everywhere.
+**🤖 AI-First Development**: Exploring how tools like Cursor, Claude Code, and Gemini CLI are revolutionizing the development workflow.
 
-### 2.1 Basic Site Configuration
+**🏗️ Modern Tech Stacks**: Mastering the art of choosing the right technologies for 2025 and beyond—from Next.js 15 to edge computing with Cloudflare.
 
-```typescript
-site: {
-  title: "Your Blog Title",
-  name: "Your Blog Name",
-  description: "Blog description",
-  keywords: ["keyword1", "keyword2"],
-  url: "https://your-domain.com",
-  baseUrl: "https://your-domain.com",
-  image: "https://your-domain.com/og-image.png",
-  favicon: {
-    ico: "/favicon.ico",
-    png: "/favicon.png",
-    svg: "/favicon.svg",
-    appleTouchIcon: "/favicon.png",
-  },
-  manifest: "/site.webmanifest",
-}
-```
+## What You'll Find Here
 
-These configurations are used for:
-- Displaying basic website information
-- SEO optimization
-- Browser tab icon
-- Social media sharing previews
+This blog is your front-row seat to my development journey, featuring:
 
-### 2.2 Author Information Configuration
+- **Real-World Project Breakdowns**: Deep dives into building production SaaS applications
+- **AI Integration Strategies**: Practical guides on incorporating AI into your development workflow  
+- **Tech Stack Analysis**: Honest reviews and recommendations based on hands-on experience
+- **Enterprise Insights**: Lessons learned from supporting large-scale systems
+- **Indie Developer Tips**: Strategies for building and shipping as a solo developer
 
-```typescript
-author: {
-  name: "Your Name",
-  email: "your-email",
-  bio: "Personal bio",
-}
-```
+## My Current Focus
 
-Author information will be used for:
-- Homepage display
-- RSS feed information
-- Author information in blog posts
+**ReadSmart Today** - Transforming PDF books into AI-generated summaries with interactive features. Built with Next.js 14, MongoDB, and Google Gemini AI.
 
-### 2.3 Social Media Configuration
+**SaaS Roadmap Platform** - An interactive learning path creator using Next.js 15, PostgreSQL, and Cloudflare's edge infrastructure.
 
-```typescript
-social: {
-  github: "https://github.com/your-username",
-  x: "https://x.com/your-username",
-  xiaohongshu: "https://www.xiaohongshu.com/user/profile/your-id",
-  wechat: "your-wechat-qr-code-image-link",
-  buyMeACoffee: "https://www.buymeacoffee.com/your-username",
-}
-```
+**Enterprise Experience** - Supporting modular Java applications with Spring Framework, Kubernetes, and modern DevOps practices.
 
-These links will be displayed in:
-- The social media links section on the homepage
-- Social media icons in the navigation bar
+## Let's Connect
 
-### 2.4 Comment System Configuration
+Whether you're an aspiring developer, seasoned engineer, or fellow indie hacker, I'd love to connect. You can find me on [GitHub](https://github.com/BreydanTan), [LinkedIn](https://www.linkedin.com/in/breydan/), or drop me an email at breydantech@gmail.com.
 
-```typescript
-giscus: {
-  repo: "your-github-repo-name",
-  repoId: "repository-ID",
-  categoryId: "category-ID",
-}
-```
+---
 
-To use Giscus as the comment system, you need to:
-1.  Install the Giscus app on GitHub
-2.  Enable Discussions in your repository
-3.  Get the configuration information and fill it in here
-
-### 2.5 Navigation Menu Configuration
-
-```typescript
-navigation: {
-  main: [
-    {
-      title: "Blog",
-      href: "/blog",
-    },
-    // You can add more navigation items
-  ],
-}
-```
-
-This is where you configure the website'''s navigation menu. It supports:
-- Regular links
-- Dropdown menus with sub-items
-
-### 2.6 SEO Configuration
-
-```typescript
-seo: {
-  metadataBase: new URL("https://your-domain.com"),
-  alternates: {
-    canonical: './',
-  },
-  openGraph: {
-    type: "website" as const,
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image" as const,
-    creator: "@your-twitter-handle",
-  },
-}
-```
-
-These configurations are used for:
-- Search engine optimization
-- Social media share cards
-- Website metadata
-
-### 2.7 RSS Feed Configuration
-
-```typescript
-rss: {
-  title: "Your Blog Title",
-  description: "Blog description",
-  feedLinks: {
-    rss2: "/rss.xml",
-    json: "/feed.json",
-    atom: "/atom.xml",
-  },
-}
-```
-
-These configurations are used to generate:
-- RSS 2.0 feed
-- JSON Feed
-- Atom feed
-
-## 3. How to Modify the Configuration
-
-1.  Open the `src/lib/config.ts` file
-2.  Modify the corresponding configuration items according to your needs
-3.  After saving the file, Next.js will automatically rebuild and apply the new configuration
-
-Notes:
-- Ensure all URLs are valid
-- Image links should be accessible
-- Social media links must be complete URLs
-- After modifying the configuration, it is recommended to check the website'''s:
-  - Homepage display
-  - Navigation menu
-  - SEO information
-  - Social media sharing effectiveness
-  - RSS feed
-
-## 4. How to Generate the RSS Feed
-
-Modify the configuration in the `scripts/generate-rss.js` file, then run:
-
-```bash
-npm run generate-rss
-```
-
-## 5. How to Generate the Sitemap
-
-Modify the configuration in the `scripts/generate-sitemap.js` file, then run:
-
-```bash
-npm run generate-sitemap
-```
+*Ready to dive in?* Check out my latest deep-dive on [The Complete Guide to Indie Developer Tech Stack in 2025](/blog/saas_techstack) where I share the exact technologies powering successful SaaS applications today.

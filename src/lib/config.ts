@@ -1,9 +1,9 @@
 export const config = {
   site: {
     title: "Breydan Personal Blog",
-    name: "Breydan tan",
-    description: "This is a personal blog for Breydan tan",
-    keywords: ["SAAS", "AI", "Full Stack Developer"],
+    name: "Breydan Tan",
+    description: "AI-powered full-stack developer sharing insights on modern SaaS development, Next.js, and AI integration. From enterprise systems to indie hacking.",
+    keywords: ["AI Development", "Next.js", "SaaS", "Full Stack", "Enterprise", "Indie Developer", "ReadSmart Today"],
     url: "https://blog.breydan.com",
     baseUrl: "https://blog.breydan.com",
     image: "https://media.licdn.com/dms/image/v2/D5603AQHccINn9TI4Kg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1716282280243?e=1756339200&v=beta&t=KbxNTy4l_8Q5NdEGBXY39cpofDZagj_M-GKeWkShC78",
@@ -27,7 +27,7 @@ export const config = {
   author: {
     name: "Breydan Tan",
     email: "breydantech@gmail.com",
-    bio: "Support Engineer at One Empower ptd ltd. Self-learning Front-end development and sharing my journey through this blog.",
+    bio: "AI-powered Full-Stack Developer building the future of SaaS. From enterprise Java systems to cutting-edge Next.js applications, I craft intelligent solutions that bridge technical excellence with real-world impact. Currently shipping ReadSmart Today and exploring the frontiers of AI-first development.",
   },
   social: {
     github: "https://github.com/BreydanTan",

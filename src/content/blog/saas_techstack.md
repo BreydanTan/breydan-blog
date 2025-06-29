@@ -26,7 +26,7 @@ Indie developers need to find the sweet spot between rapid experimentation and s
 
 ### Next.js: The Best Choice for Full-Stack Development
 
-Next.js 14+ (App Router) has become the go-to framework for indie developers building AI SaaS applications:
+Next.js 15+ (App Router) has become the go-to framework for indie developers building AI SaaS applications:
 
 **🔥 Key Advantages**:
 - **App Router architecture**: Better performance and developer experience
@@ -445,7 +445,7 @@ Indie development in 2025 has evolved from "choosing the right tools" to "buildi
 
 #### **Golden Combination (Complete AI SaaS Stack)**
 ```
-Frontend: Next.js 14+ (App Router) + TailwindCSS + shadcn/ui + Framer Motion
+Frontend: Next.js 15+ (App Router) + TailwindCSS + shadcn/ui + Framer Motion
 Backend: Hono.js + Cloudflare Workers + Durable Objects
 Database: Neon Postgres + Drizzle ORM + pgvector (vector search)
 Storage: Cloudflare R2 (files) + Cloudflare D1 (edge data)

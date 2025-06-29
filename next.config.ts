@@ -11,7 +11,18 @@ const nextConfig: NextConfig = {
   },
   images: {
     unoptimized: true, // Required for static export
-    domains: ['media.licdn.com'], // Allow LinkedIn images
+    domains: ['media.licdn.com', 'elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com'],
+  },
+  // JavaScript optimization for better Best Practices score
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Enhanced minification for production
+  webpack: (config, { dev, isServer }) => {
+    if (!dev && !isServer) {
+      config.optimization.minimize = true;
+    }
+    return config;
   },
 };
 
