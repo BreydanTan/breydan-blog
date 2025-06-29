@@ -16,7 +16,7 @@ export default function AboutPage() {
             className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto mb-4 sm:mb-6 shadow-lg"
           />
           <h1 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">Breydan Tan</h1>
-          <p className="text-lg sm:text-xl text-gray-600 mb-2 px-4">Support Engineer & Full-Stack Developer</p>
+          <p className="text-lg sm:text-xl text-gray-600 mb-2 px-4">Support Engineer & Vibe Coder</p>
           <p className="text-gray-500 mb-6 px-4">Passionate learner exploring new technologies</p>
           
           <DownloadResumeButton />
@@ -79,10 +79,32 @@ export default function AboutPage() {
               </div>
               
               <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800">Cloud & Infrastructure</h3>
+                <div className="flex flex-wrap gap-1 sm:gap-2">
+                  {['Cloudflare Workers', 'AWS S3', 'Cloudflare Pages', 'Vercel', 'GitHub Actions'].map(skill => (
+                    <span key={skill} className="px-2 sm:px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs sm:text-sm font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800">Backend & Database</h3>
+                <div className="flex flex-wrap gap-1 sm:gap-2">
+                  {['Node.js', 'MongoDB', 'PostgreSQL', 'Prisma', 'NextAuth.js'].map(skill => (
+                    <span key={skill} className="px-2 sm:px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs sm:text-sm font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              
+              <div className="bg-white border border-gray-200 rounded-lg p-4 sm:p-6 shadow-sm">
                 <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-gray-800">Currently Learning</h3>
                 <div className="flex flex-wrap gap-1 sm:gap-2">
-                  {['Node.js', 'Python', 'Database Design', 'DevOps', 'System Architecture'].map(skill => (
-                    <span key={skill} className="px-2 sm:px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs sm:text-sm font-medium">
+                  {['Python', 'DevOps', 'System Architecture', 'Performance Optimization'].map(skill => (
+                    <span key={skill} className="px-2 sm:px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-xs sm:text-sm font-medium">
                       {skill}
                     </span>
                   ))}
@@ -263,7 +285,7 @@ export default function AboutPage() {
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800">Enterprise Java Application Support</h3>
-                  <p className="text-blue-600 font-medium">Multi-Module Banking System (OCBC OLS2)</p>
+                  <p className="text-blue-600 font-medium">Loyalty Banking System</p>
                 </div>
                 <span className="text-gray-500 text-sm">Current Role</span>
               </div>
@@ -280,7 +302,7 @@ export default function AboutPage() {
                     <li>• Modular Java application with Spring Framework</li>
                     <li>• API Gateway pattern implementation</li>
                     <li>• Microservices-oriented design</li>
-                    <li>• Multi-region deployment (HK, SG, ID)</li>
+                    <li>• Multi-region deployment </li>
                   </ul>
                 </div>
                 <div>
@@ -334,25 +356,38 @@ export default function AboutPage() {
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">Tech Stack & Tools</h2>
+            <h2 className="text-3xl font-bold mb-6 text-gray-800">Blog Tech Stack & Deployment</h2>
             <div className="bg-gray-50 p-6 rounded-lg">
               <p className="text-gray-700 leading-relaxed mb-4">
-                This blog is built with modern web technologies and hosted on{" "}
-                <a href="https://vercel.com/" className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
-                  Vercel
+                This blog showcases modern deployment practices using{" "}
+                <a href="https://pages.cloudflare.com/" className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
+                  Cloudflare Pages
                 </a>
-                . It uses{" "}
+                {" "}for hosting and{" "}
+                <a href="https://aws.amazon.com/s3/" className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
+                  AWS S3
+                </a>
+                {" "}for optimized image storage. Built with{" "}
                 <a href="https://nextjs.org/" className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
-                  Next.js
+                  Next.js 15
                 </a>
-                {" "}for the framework,{" "}
+                {" "}using static export and{" "}
                 <a href="https://tailwindcss.com/" className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer">
                   Tailwind CSS
                 </a>
-                {" "}for styling, and MDX for content management.
+                {" "}for styling. Achieved 95+ Lighthouse scores across all metrics.
               </p>
+              
+              <div className="my-6">
+                <img 
+                  src="https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/score.jpg" 
+                  alt="Lighthouse Performance Score" 
+                  className="w-full max-w-2xl mx-auto rounded-lg shadow-md"
+                />
+              </div>
+              
               <div className="flex flex-wrap gap-2">
-                {['Next.js 15', 'React 19', 'TypeScript', 'Tailwind CSS', 'MDX', 'Vercel'].map(tech => (
+                {['Next.js 15', 'TypeScript', 'Tailwind CSS', 'MDX', 'Cloudflare Pages', 'AWS S3', 'Claude Code'].map(tech => (
                   <span key={tech} className="px-3 py-1 bg-gray-200 text-gray-800 rounded-full text-sm">
                     {tech}
                   </span>
