@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    unoptimized: true, // Required for static export
+    domains: ['media.licdn.com'], // Allow LinkedIn images
+  },
 };
 
 const withMDX = createMDX({

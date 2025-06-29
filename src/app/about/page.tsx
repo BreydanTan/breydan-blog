@@ -1,14 +1,18 @@
 import { config } from "@/lib/config";
 import DownloadResumeButton from "@/components/DownloadResumeButton";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl">
       <div className="prose prose-lg mx-auto max-w-none">
         <div className="text-center mb-8 sm:mb-12">
-          <img 
-            src="/images/avatar.png" 
+          <Image
+            src="https://media.licdn.com/dms/image/v2/D5603AQHccINn9TI4Kg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1716282280243"
             alt="Breydan Tan"
+            width={128}
+            height={128}
+            priority
             className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mx-auto mb-4 sm:mb-6 shadow-lg"
           />
           <h1 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">Breydan Tan</h1>
