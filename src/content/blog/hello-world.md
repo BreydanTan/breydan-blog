@@ -77,7 +77,7 @@ __This will also be bold__
 ```
 
 **Example**
-![WeChat Official Account](https://storage.guangzhengli.com/images/wechat-official-account.png)
+![Golden Combination Tech Stack](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/goldencombination.png)
 
 # 5. Hyperlinks
 
@@ -88,7 +88,7 @@ __This will also be bold__
 
 **Example**
 
-[WeChat Official Account Link](https://storage.guangzhengli.com/images/wechat-official-account.png)
+[Golden Combination Tech Stack](https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/blog/saas-techstack/goldencombination.png)
 
 # 6. Blockquotes
 
