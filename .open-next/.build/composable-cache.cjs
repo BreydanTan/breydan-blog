@@ -1,4 +1,4 @@
-globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.isNextAfter15 = true;globalThis.openNextDebug = false;globalThis.openNextVersion = "3.6.6";
+globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.isNextAfter15 = true;globalThis.openNextDebug = false;globalThis.openNextVersion = "3.7.4";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -24,6 +24,43 @@ __export(composable_cache_exports, {
 });
 module.exports = __toCommonJS(composable_cache_exports);
 
+// ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/logger.js
+function debug(...args) {
+  if (globalThis.openNextDebug) {
+    console.log(...args);
+  }
+}
+
+// ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/cache.js
+function getTagKey(tag) {
+  if (typeof tag === "string") {
+    return tag;
+  }
+  return JSON.stringify({
+    tag: tag.tag,
+    path: tag.path
+  });
+}
+async function writeTags(tags) {
+  const store = globalThis.__openNextAls.getStore();
+  debug("Writing tags", tags, store);
+  if (!store || globalThis.openNextConfig.dangerous?.disableTagCache) {
+    return;
+  }
+  const tagsToWrite = tags.filter((t) => {
+    const tagKey = getTagKey(t);
+    const shouldWrite = !store.writtenTags.has(tagKey);
+    if (shouldWrite) {
+      store.writtenTags.add(tagKey);
+    }
+    return shouldWrite;
+  });
+  if (tagsToWrite.length === 0) {
+    return;
+  }
+  await globalThis.tagCache.writeTags(tagsToWrite);
+}
+
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/stream.js
 var import_node_stream = require("node:stream");
 function fromReadableStream(stream, base64) {
@@ -47,28 +84,31 @@ function toReadableStream(value, isBase64) {
   return import_node_stream.Readable.toWeb(import_node_stream.Readable.from(Buffer.from(value, isBase64 ? "base64" : "utf8")));
 }
 
-// ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/logger.js
-function debug(...args) {
-  if (globalThis.openNextDebug) {
-    console.log(...args);
-  }
-}
-
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/composable-cache.js
+var pendingWritePromiseMap = /* @__PURE__ */ new Map();
 var composable_cache_default = {
   async get(cacheKey) {
     try {
+      if (pendingWritePromiseMap.has(cacheKey)) {
+        const stored = pendingWritePromiseMap.get(cacheKey);
+        if (stored) {
+          return stored.then((entry) => ({
+            ...entry,
+            value: toReadableStream(entry.value)
+          }));
+        }
+      }
       const result = await globalThis.incrementalCache.get(cacheKey, "composable");
       if (!result?.value?.value) {
         return void 0;
       }
       debug("composable cache result", result);
       if (globalThis.tagCache.mode === "nextMode" && result.value.tags.length > 0) {
-        const hasBeenRevalidated = await globalThis.tagCache.hasBeenRevalidated(result.value.tags, result.lastModified);
+        const hasBeenRevalidated = result.shouldBypassTagCache ? false : await globalThis.tagCache.hasBeenRevalidated(result.value.tags, result.lastModified);
         if (hasBeenRevalidated)
           return void 0;
       } else if (globalThis.tagCache.mode === "original" || globalThis.tagCache.mode === void 0) {
-        const hasBeenRevalidated = await globalThis.tagCache.getLastModified(cacheKey, result.lastModified) === -1;
+        const hasBeenRevalidated = result.shouldBypassTagCache ? false : await globalThis.tagCache.getLastModified(cacheKey, result.lastModified) === -1;
         if (hasBeenRevalidated)
           return void 0;
       }
@@ -82,17 +122,23 @@ var composable_cache_default = {
     }
   },
   async set(cacheKey, pendingEntry) {
-    const entry = await pendingEntry;
-    const valueToStore = await fromReadableStream(entry.value);
+    const promiseEntry = pendingEntry.then(async (entry2) => ({
+      ...entry2,
+      value: await fromReadableStream(entry2.value)
+    }));
+    pendingWritePromiseMap.set(cacheKey, promiseEntry);
+    const entry = await promiseEntry.finally(() => {
+      pendingWritePromiseMap.delete(cacheKey);
+    });
     await globalThis.incrementalCache.set(cacheKey, {
       ...entry,
-      value: valueToStore
+      value: entry.value
     }, "composable");
     if (globalThis.tagCache.mode === "original") {
       const storedTags = await globalThis.tagCache.getByPath(cacheKey);
       const tagsToWrite = entry.tags.filter((tag) => !storedTags.includes(tag));
       if (tagsToWrite.length > 0) {
-        await globalThis.tagCache.writeTags(tagsToWrite.map((tag) => ({ tag, path: cacheKey })));
+        await writeTags(tagsToWrite.map((tag) => ({ tag, path: cacheKey })));
       }
     }
   },
@@ -107,7 +153,7 @@ var composable_cache_default = {
   },
   async expireTags(...tags) {
     if (globalThis.tagCache.mode === "nextMode") {
-      return globalThis.tagCache.writeTags(tags);
+      return writeTags(tags);
     }
     const tagCache = globalThis.tagCache;
     const revalidatedAt = Date.now();
@@ -123,7 +169,7 @@ var composable_cache_default = {
     for (const entry of pathsToUpdate.flat()) {
       setToWrite.add(entry);
     }
-    await globalThis.tagCache.writeTags(Array.from(setToWrite));
+    await writeTags(Array.from(setToWrite));
   },
   // This one is necessary for older versions of next
   async receiveExpiredTags(...tags) {

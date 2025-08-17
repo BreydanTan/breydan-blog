@@ -27,7 +27,7 @@ export const config = {
   author: {
     name: "Breydan Tan",
     email: "breydantech@gmail.com",
-    bio: "AI-powered Full-Stack Developer building the future of SaaS. From enterprise Java systems to cutting-edge Next.js applications, I craft intelligent solutions that bridge technical excellence with real-world impact. Currently shipping ReadSmart Today and exploring the frontiers of AI-first development.",
+    bio: "AI enthusiast exploring the intersection of technology and innovation. I share insights on modern development, AI integration, and the tools shaping our digital future. For more about my background and journey, check out the About Me page.",
   },
   social: {
     github: "https://github.com/BreydanTan",

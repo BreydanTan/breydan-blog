@@ -23,28 +23,43 @@ export function Header() {
     .filter(link => !!link.href);
 
   return (
-    <header className="pt-4">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-4 max-w-4xl">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container-anthropic flex h-16 items-center justify-between">
         {/* Mobile navigation */}
-        <NavMobileMenu />
+        <div className="md:hidden">
+          <NavMobileMenu />
+        </div>
 
         {/* Logo */}
-        <Link href="/" title="Home" className="flex items-center gap-2 sm:gap-4 md:order-first">
-          <SquareTerminal className="w-8 h-8 sm:w-10 sm:h-10" />
+        <Link 
+          href="/" 
+          title="Home" 
+          className="flex items-center gap-3 transition-anthropic hover:opacity-80 md:order-first"
+        >
+          <SquareTerminal className="w-7 h-7 text-primary" />
+          <span className="hidden sm:inline-block font-semibold text-lg text-primary tracking-tight">
+            {config.site.title.split(' ')[0]}
+          </span>
         </Link>
 
         {/* Desktop navigation */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex md:flex-1 md:justify-center">
           <NavDesktopMenu />
         </div>
 
-        {/* Right side buttons */}
-        <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-8 mr-2 sm:mr-4">
+        {/* Right side social links */}
+        <div className="flex items-center space-x-1">
           {socialLinks.map((link) => (
-            <Link key={link.title} href={link.href} title={link.title} className="p-1">
-              <div className="w-5 h-5 sm:w-6 sm:h-6">
+            <Link 
+              key={link.title} 
+              href={link.href} 
+              title={link.title} 
+              className="inline-flex items-center justify-center w-9 h-9 rounded-md text-muted hover:text-primary hover:bg-subtle transition-anthropic"
+            >
+              <div className="w-5 h-5">
                 {link.icon}
               </div>
+              <span className="sr-only">{link.title}</span>
             </Link>
           ))}
         </div>

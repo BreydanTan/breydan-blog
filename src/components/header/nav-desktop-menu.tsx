@@ -2,76 +2,35 @@
 
 import * as React from "react"
 import Link from "next/link"
-
+import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
 import { menuItems } from "./nav-data"
 
 export function NavDesktopMenu() {
+  const pathname = usePathname()
+
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
-        {menuItems.map((item) => (
-          <NavigationMenuItem key={item.title}>
-            {item.submenu ? (
-              <>
-                <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid h-16 w-[150px] p-2">
-                    {item.submenu.map((subItem) => (
-                      <ListItem
-                        key={subItem.title}
-                        title={subItem.title}
-                        href={subItem.href}
-                      >
-                        {subItem.title}
-                      </ListItem>
-                    ))}
-                  </ul>
-                </NavigationMenuContent>
-              </>
-            ) : (
-              <Link href={item.href ?? ""} title={item.title} legacyBehavior passHref>
-                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                  {item.title}
-                </NavigationMenuLink>
-              </Link>
+    <nav className="flex items-center space-x-1">
+      {menuItems.map((item) => {
+        const isActive = pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href || ""))
+        
+        return (
+          <Link
+            key={item.title}
+            href={item.href ?? ""}
+            className={cn(
+              "inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md transition-anthropic",
+              "hover:text-primary hover:bg-subtle",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+              isActive 
+                ? "text-primary bg-subtle" 
+                : "text-secondary"
             )}
-          </NavigationMenuItem>
-        ))}
-      </NavigationMenuList>
-    </NavigationMenu>
+          >
+            {item.title}
+          </Link>
+        )
+      })}
+    </nav>
   )
 }
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          title={title}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-2xg font-bold leading-none">{title}</div>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"

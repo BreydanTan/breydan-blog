@@ -21,51 +21,86 @@ export default function Home() {
     .filter(link => !!link.href);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* 个人介绍部分 */}
-      <div className="mb-12 sm:mb-16 space-y-4">
-        <h1 className="text-3xl sm:text-4xl font-bold">{config.site.title}</h1>
-        <p className="text-sm sm:text-md text-gray-600">{config.author.bio}</p>
-        
-        {/* 社交链接 - 仅当有链接时才显示 */}
-        {socialLinks.length > 0 && (
-          <div className="flex flex-wrap space-x-2 text-gray-600 text-sm sm:text-base">
-            {socialLinks.map((link, index) => (
-              <div key={link.name} className="flex items-center">
-                {index > 0 && <span className="mx-1">·</span>}
-                <Link href={link.href} className="underline underline-offset-4">
+    <main className="container-anthropic py-12 md:py-16">
+      {/* Hero Section */}
+      <section className="max-w-4xl mx-auto mb-16 md:mb-24">
+        <div className="text-center space-y-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary leading-tight tracking-tight text-balance">
+            {config.site.title}
+          </h1>
+          <p className="text-lg md:text-xl text-secondary leading-relaxed max-w-2xl mx-auto text-balance">
+            {config.author.bio}
+          </p>
+          
+          {/* Social Links */}
+          {socialLinks.length > 0 && (
+            <div className="flex items-center justify-center gap-6 pt-4">
+              {socialLinks.map((link, index) => (
+                <Link 
+                  key={link.name}
+                  href={link.href} 
+                  className="text-muted hover:text-primary transition-anthropic text-sm font-medium"
+                >
                   {link.name}
                 </Link>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
-      <div className="space-y-4">
-        <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Latest Articles</h2>
-        <div className="space-y-6 sm:space-y-8">
+      {/* Articles Section */}
+      <section className="max-w-3xl mx-auto">
+        <div className="mb-12">
+          <h2 className="text-2xl md:text-3xl font-semibold text-primary mb-2">
+            Latest Articles
+          </h2>
+          <p className="text-secondary">
+            Thoughts on technology, development, and building the future.
+          </p>
+        </div>
+
+        <div className="space-y-8">
           {blogs.map((blog: any) => (
-            <article key={blog.slug} className="">
-              <Link href={`/blog/${blog.slug}`}>
-                <div className="flex flex-col space-y-2">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                    <h2 className="text-lg sm:text-xl font-semibold underline underline-offset-4 mb-1 sm:mb-0">
-                      {blog.title}
-                    </h2>
-                    <span className="text-xs sm:text-sm text-gray-500 flex-shrink-0">
-                      {formatDate(blog.date)} · {count(blog.content)} words
-                    </span>
+            <article key={blog.slug} className="group">
+              <Link href={`/blog/${blog.slug}`} className="block">
+                <div className="p-6 rounded-lg border border-border hover:border-muted hover:bg-subtle transition-anthropic">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="text-xl font-semibold text-primary group-hover:text-link transition-anthropic leading-tight">
+                        {blog.title}
+                      </h3>
+                      <div className="flex items-center gap-2 text-xs text-muted whitespace-nowrap">
+                        <time dateTime={blog.date}>
+                          {formatDate(blog.date)}
+                        </time>
+                        <span>·</span>
+                        <span>{count(blog.content)} words</span>
+                      </div>
+                    </div>
+                    <p className="text-secondary leading-relaxed line-clamp-2">
+                      {blog.summary}
+                    </p>
                   </div>
-                  <p className="text-gray-600 line-clamp-2 text-sm sm:text-base">
-                    {blog.summary}
-                  </p>
                 </div>
               </Link>
             </article>
           ))}
         </div>
-      </div>
-    </div>
+
+        {/* View All Articles Link */}
+        <div className="mt-12 text-center">
+          <Link 
+            href="/blog" 
+            className="inline-flex items-center gap-2 text-link hover:text-link-hover font-medium transition-anthropic"
+          >
+            View all articles
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }
