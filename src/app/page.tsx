@@ -1,27 +1,31 @@
 import { allBlogs } from "content-collections";
 import Link from "next/link";
-import count from 'word-count'
+import count from "word-count";
 import { config } from "@/lib/config";
 import { formatDate } from "@/lib/utils";
 
 export default function Home() {
   const blogs = allBlogs
     .filter((blog: any) => blog.featured === true)
-    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort(
+      (a: any, b: any) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
 
   const socialLinks = [
     { name: "buyMeACoffee", key: "buyMeACoffee" },
     { name: "X", key: "x" },
     { name: "Linkedin", key: "linkedin" },
   ]
-    .map(item => ({
+    .map((item) => ({
       name: item.name,
-      href: config.social && config.social[item.key as keyof typeof config.social]
+      href:
+        config.social && config.social[item.key as keyof typeof config.social],
     }))
-    .filter(link => !!link.href);
+    .filter((link) => !!link.href);
 
   return (
-    <main className="container-anthropic py-12 md:py-16">
+    <div className="container-anthropic py-12 md:py-16">
       {/* Hero Section */}
       <section className="max-w-4xl mx-auto mb-16 md:mb-24">
         <div className="text-center space-y-6">
@@ -31,14 +35,14 @@ export default function Home() {
           <p className="text-lg md:text-xl text-secondary leading-relaxed max-w-2xl mx-auto text-balance">
             {config.author.bio}
           </p>
-          
+
           {/* Social Links */}
           {socialLinks.length > 0 && (
             <div className="flex items-center justify-center gap-6 pt-4">
               {socialLinks.map((link, index) => (
-                <Link 
+                <Link
                   key={link.name}
-                  href={link.href} 
+                  href={link.href}
                   className="text-muted hover:text-primary transition-anthropic text-sm font-medium"
                 >
                   {link.name}
@@ -90,17 +94,27 @@ export default function Home() {
 
         {/* View All Articles Link */}
         <div className="mt-12 text-center">
-          <Link 
-            href="/blog" 
+          <Link
+            href="/blog"
             className="inline-flex items-center gap-2 text-link hover:text-link-hover font-medium transition-anthropic"
           >
             View all articles
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
             </svg>
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
