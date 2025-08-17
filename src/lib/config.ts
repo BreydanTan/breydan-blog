@@ -35,9 +35,9 @@ export const config = {
     linkedin: "https://www.linkedin.com/in/breydan/",
   },
   giscus: {
-    repo: "BreydanTan/nextjs-blog-template",
-    repoId: "YOUR_REPO_ID",
-    categoryId: "YOUR_CATEGORY_ID",
+    repo: "BreydanTan/breydan-blog",
+    repoId: "R_kgDOPDW2Fw",
+    categoryId: "DIC_kwDOPDW2F84CsJ8v",
   },
   navigation: {
     main: [

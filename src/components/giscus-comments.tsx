@@ -43,13 +43,14 @@ export default function GiscusComments() {
       id="comments"
       repo={config.giscus.repo as `${string}/${string}`}
       repoId={config.giscus.repoId}
-      category="Announcements"
+      category="General"
       categoryId={config.giscus.categoryId}
       mapping="pathname"
+      strict="0"
       reactionsEnabled="1"
       emitMetadata="0"
-      inputPosition="top"
-      theme="light"
+      inputPosition="bottom"
+      theme="preferred_color_scheme"
       lang="en"
       loading="lazy"
     />
