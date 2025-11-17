@@ -16,7 +16,7 @@ Object.defineProperty = function(o, p, a) {
 
   
   
-  globalThis.openNextDebug = false;globalThis.openNextVersion = "3.7.4";
+  globalThis.openNextDebug = false;globalThis.openNextVersion = "3.8.5";
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -278,6 +278,12 @@ var require_dist = __commonJS({
   }
 });
 
+// ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/logger.js
+var init_logger2 = __esm({
+  "../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/logger.js"() {
+  }
+});
+
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/http/util.js
 function parseSetCookieHeader(cookies) {
   if (!cookies) {
@@ -305,6 +311,7 @@ function getQueryFromIterator(it) {
 }
 var init_util = __esm({
   "../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/http/util.js"() {
+    init_logger2();
   }
 });
 
@@ -336,7 +343,6 @@ var init_edge = __esm({
         const url = new URL(event.url);
         const searchParams = url.searchParams;
         const query = getQueryFromSearchParams(searchParams);
-        const body = await event.arrayBuffer();
         const headers = {};
         event.headers.forEach((value, key) => {
           headers[key] = value;
@@ -344,6 +350,7 @@ var init_edge = __esm({
         const rawPath = url.pathname;
         const method = event.method;
         const shouldHaveBody = method !== "GET" && method !== "HEAD";
+        const body = shouldHaveBody ? Buffer2.from(await event.arrayBuffer()) : void 0;
         const cookieHeader = event.headers.get("cookie");
         const cookies = cookieHeader ? import_cookie.default.parse(cookieHeader) : {};
         return {
@@ -351,7 +358,7 @@ var init_edge = __esm({
           method,
           rawPath,
           url: event.url,
-          body: shouldHaveBody ? Buffer2.from(body) : void 0,
+          body,
           headers,
           remoteAddress: event.headers.get("x-forwarded-for") ?? "::1",
           query,
@@ -461,33 +468,54 @@ var pattern_env_exports = {};
 __export(pattern_env_exports, {
   default: () => pattern_env_default
 });
-var envLoader, pattern_env_default;
+function initializeOnce() {
+  if (initialized)
+    return;
+  cachedOrigins = JSON.parse(process.env.OPEN_NEXT_ORIGIN ?? "{}");
+  const functions = globalThis.openNextConfig.functions ?? {};
+  for (const key in functions) {
+    if (key !== "default") {
+      const value = functions[key];
+      const regexes = [];
+      for (const pattern of value.patterns) {
+        const regexPattern = `/${pattern.replace(/\*\*/g, "(.*)").replace(/\*/g, "([^/]*)").replace(/\//g, "\\/").replace(/\?/g, ".")}`;
+        regexes.push(new RegExp(regexPattern));
+      }
+      cachedPatterns.push({
+        key,
+        patterns: value.patterns,
+        regexes
+      });
+    }
+  }
+  initialized = true;
+}
+var cachedOrigins, cachedPatterns, initialized, envLoader, pattern_env_default;
 var init_pattern_env = __esm({
   "../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/overrides/originResolver/pattern-env.js"() {
     init_logger();
+    cachedPatterns = [];
+    initialized = false;
     envLoader = {
       name: "env",
       resolve: async (_path) => {
         try {
-          const origin = JSON.parse(process.env.OPEN_NEXT_ORIGIN ?? "{}");
-          for (const [key, value] of Object.entries(globalThis.openNextConfig.functions ?? {}).filter(([key2]) => key2 !== "default")) {
-            if (value.patterns.some((pattern) => {
-              return new RegExp(
-                // transform glob pattern to regex
-                `/${pattern.replace(/\*\*/g, "(.*)").replace(/\*/g, "([^/]*)").replace(/\//g, "\\/").replace(/\?/g, ".")}`
-              ).test(_path);
-            })) {
-              debug("Using origin", key, value.patterns);
-              return origin[key];
+          initializeOnce();
+          for (const { key, patterns, regexes } of cachedPatterns) {
+            for (const regex of regexes) {
+              if (regex.test(_path)) {
+                debug("Using origin", key, patterns);
+                return cachedOrigins[key];
+              }
             }
           }
-          if (_path.startsWith("/_next/image") && origin.imageOptimizer) {
+          if (_path.startsWith("/_next/image") && cachedOrigins.imageOptimizer) {
             debug("Using origin", "imageOptimizer", _path);
-            return origin.imageOptimizer;
+            return cachedOrigins.imageOptimizer;
           }
-          if (origin.default) {
-            debug("Using default origin", origin.default, _path);
-            return origin.default;
+          if (cachedOrigins.default) {
+            debug("Using default origin", cachedOrigins.default, _path);
+            return cachedOrigins.default;
           }
           return false;
         } catch (e) {
@@ -516,16 +544,32 @@ var init_dummy = __esm({
 });
 
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/stream.js
-import { Readable } from "node:stream";
+import { ReadableStream } from "node:stream/web";
 function toReadableStream(value, isBase64) {
-  return Readable.toWeb(Readable.from(Buffer.from(value, isBase64 ? "base64" : "utf8")));
+  return new ReadableStream({
+    pull(controller) {
+      controller.enqueue(Buffer.from(value, isBase64 ? "base64" : "utf8"));
+      controller.close();
+    }
+  }, { highWaterMark: 0 });
 }
 function emptyReadableStream() {
   if (process.env.OPEN_NEXT_FORCE_NON_EMPTY_RESPONSE === "true") {
-    return Readable.toWeb(Readable.from([Buffer.from("SOMETHING")]));
+    return new ReadableStream({
+      pull(controller) {
+        maybeSomethingBuffer ??= Buffer.from("SOMETHING");
+        controller.enqueue(maybeSomethingBuffer);
+        controller.close();
+      }
+    }, { highWaterMark: 0 });
   }
-  return Readable.toWeb(Readable.from([]));
+  return new ReadableStream({
+    start(controller) {
+      controller.close();
+    }
+  });
 }
+var maybeSomethingBuffer;
 var init_stream = __esm({
   "../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/stream.js"() {
   }
@@ -741,7 +785,6 @@ async function createGenericHandler(handler3) {
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/util.js
 import crypto from "node:crypto";
 import { parse as parseQs, stringify as stringifyQs } from "node:querystring";
-import { Readable as Readable2 } from "node:stream";
 
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/adapters/config/index.js
 init_logger();
@@ -751,12 +794,12 @@ var NEXT_DIR = path.join(__dirname, ".next");
 var OPEN_NEXT_DIR = path.join(__dirname, ".open-next");
 debug({ NEXT_DIR, OPEN_NEXT_DIR });
 var NextConfig = { "env": {}, "eslint": { "ignoreDuringBuilds": true }, "typescript": { "ignoreBuildErrors": false, "tsconfigPath": "tsconfig.json" }, "distDir": ".next", "cleanDistDir": true, "assetPrefix": "", "cacheMaxMemorySize": 52428800, "configOrigin": "next.config.ts", "useFileSystemPublicRoutes": true, "generateEtags": true, "pageExtensions": ["js", "jsx", "md", "mdx", "ts", "tsx"], "poweredByHeader": true, "compress": true, "images": { "deviceSizes": [640, 750, 828, 1080, 1200, 1920, 2048, 3840], "imageSizes": [16, 32, 48, 64, 96, 128, 256, 384], "path": "/_next/image/", "loader": "default", "loaderFile": "", "domains": ["media.licdn.com", "elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com"], "disableStaticImages": false, "minimumCacheTTL": 60, "formats": ["image/webp"], "dangerouslyAllowSVG": false, "contentSecurityPolicy": "script-src 'none'; frame-src 'none'; sandbox;", "contentDispositionType": "attachment", "remotePatterns": [], "unoptimized": true }, "devIndicators": { "position": "bottom-left" }, "onDemandEntries": { "maxInactiveAge": 6e4, "pagesBufferLength": 5 }, "amp": { "canonicalBase": "" }, "basePath": "", "sassOptions": {}, "trailingSlash": true, "i18n": null, "productionBrowserSourceMaps": false, "excludeDefaultMomentLocales": true, "serverRuntimeConfig": {}, "publicRuntimeConfig": {}, "reactProductionProfiling": false, "reactStrictMode": null, "reactMaxHeadersLength": 6e3, "httpAgentOptions": { "keepAlive": true }, "logging": {}, "expireTime": 31536e3, "staticPageGenerationTimeout": 60, "output": "export", "modularizeImports": { "@mui/icons-material": { "transform": "@mui/icons-material/{{member}}" }, "lodash": { "transform": "lodash/{{member}}" } }, "outputFileTracingRoot": "/Users/cheewingtan/Desktop/Code/Breydan/Blog/nextjs-blog-template", "experimental": { "allowedDevOrigins": [], "nodeMiddleware": false, "cacheLife": { "default": { "stale": 300, "revalidate": 900, "expire": 4294967294 }, "seconds": { "stale": 0, "revalidate": 1, "expire": 60 }, "minutes": { "stale": 300, "revalidate": 60, "expire": 3600 }, "hours": { "stale": 300, "revalidate": 3600, "expire": 86400 }, "days": { "stale": 300, "revalidate": 86400, "expire": 604800 }, "weeks": { "stale": 300, "revalidate": 604800, "expire": 2592e3 }, "max": { "stale": 300, "revalidate": 2592e3, "expire": 4294967294 } }, "cacheHandlers": {}, "cssChunking": true, "multiZoneDraftMode": false, "appNavFailHandling": false, "prerenderEarlyExit": true, "serverMinification": true, "serverSourceMaps": false, "linkNoTouchStart": false, "caseSensitiveRoutes": false, "clientSegmentCache": false, "preloadEntriesOnStart": true, "clientRouterFilter": true, "clientRouterFilterRedirects": false, "fetchCacheKeyPrefix": "", "middlewarePrefetch": "flexible", "optimisticClientCache": true, "manualClientBasePath": false, "cpus": 13, "memoryBasedWorkersCount": false, "imgOptConcurrency": null, "imgOptTimeoutInSeconds": 7, "imgOptMaxInputPixels": 268402689, "imgOptSequentialRead": null, "isrFlushToDisk": true, "workerThreads": false, "optimizeCss": false, "nextScriptWorkers": false, "scrollRestoration": false, "externalDir": false, "disableOptimizedLoading": false, "gzipSize": true, "craCompat": false, "esmExternals": true, "fullySpecified": false, "swcTraceProfiling": false, "forceSwcTransforms": false, "largePageDataBytes": 128e3, "turbo": { "root": "/Users/cheewingtan/Desktop/Code/Breydan/Blog/nextjs-blog-template" }, "typedRoutes": false, "typedEnv": false, "parallelServerCompiles": false, "parallelServerBuildTraces": false, "ppr": false, "authInterrupts": false, "webpackMemoryOptimizations": false, "optimizeServerReact": true, "useEarlyImport": false, "viewTransition": false, "staleTimes": { "dynamic": 0, "static": 300 }, "serverComponentsHmrCache": true, "staticGenerationMaxConcurrency": 8, "staticGenerationMinPagesPerWorker": 25, "dynamicIO": false, "inlineCss": false, "useCache": false, "optimizePackageImports": ["lucide-react", "date-fns", "lodash-es", "ramda", "antd", "react-bootstrap", "ahooks", "@ant-design/icons", "@headlessui/react", "@headlessui-float/react", "@heroicons/react/20/solid", "@heroicons/react/24/solid", "@heroicons/react/24/outline", "@visx/visx", "@tremor/react", "rxjs", "@mui/material", "@mui/icons-material", "recharts", "react-use", "effect", "@effect/schema", "@effect/platform", "@effect/platform-node", "@effect/platform-browser", "@effect/platform-bun", "@effect/sql", "@effect/sql-mssql", "@effect/sql-mysql2", "@effect/sql-pg", "@effect/sql-squlite-node", "@effect/sql-squlite-bun", "@effect/sql-squlite-wasm", "@effect/sql-squlite-react-native", "@effect/rpc", "@effect/rpc-http", "@effect/typeclass", "@effect/experimental", "@effect/opentelemetry", "@material-ui/core", "@material-ui/icons", "@tabler/icons-react", "mui-core", "react-icons/ai", "react-icons/bi", "react-icons/bs", "react-icons/cg", "react-icons/ci", "react-icons/di", "react-icons/fa", "react-icons/fa6", "react-icons/fc", "react-icons/fi", "react-icons/gi", "react-icons/go", "react-icons/gr", "react-icons/hi", "react-icons/hi2", "react-icons/im", "react-icons/io", "react-icons/io5", "react-icons/lia", "react-icons/lib", "react-icons/lu", "react-icons/md", "react-icons/pi", "react-icons/ri", "react-icons/rx", "react-icons/si", "react-icons/sl", "react-icons/tb", "react-icons/tfi", "react-icons/ti", "react-icons/vsc", "react-icons/wi"], "trustHostHeader": false, "isExperimentalCompile": false }, "htmlLimitedBots": "Mediapartners-Google|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview", "bundlePagesRouterDependencies": false, "configFileName": "next.config.ts", "compiler": { "removeConsole": true } };
-var BuildId = "kdpHyuSGiVG0NGElrXmVp";
+var BuildId = "wkWe-HFnMkTrzrrnmM-9o";
 var RoutesManifest = { "basePath": "", "rewrites": { "beforeFiles": [], "afterFiles": [], "fallback": [] }, "redirects": [{ "source": "/:file((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+)/", "destination": "/:file", "internal": true, "missing": [{ "type": "header", "key": "x-nextjs-data" }], "statusCode": 308, "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/]+\\.\\w+))/$" }, { "source": "/:notfile((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+)", "destination": "/:notfile/", "internal": true, "statusCode": 308, "regex": "^(?:/((?!\\.well-known(?:/.*)?)(?:[^/]+/)*[^/\\.]+))$" }], "routes": { "static": [{ "page": "/", "regex": "^/(?:/)?$", "routeKeys": {}, "namedRegex": "^/(?:/)?$" }, { "page": "/_not-found", "regex": "^/_not\\-found(?:/)?$", "routeKeys": {}, "namedRegex": "^/_not\\-found(?:/)?$" }, { "page": "/about", "regex": "^/about(?:/)?$", "routeKeys": {}, "namedRegex": "^/about(?:/)?$" }, { "page": "/blog", "regex": "^/blog(?:/)?$", "routeKeys": {}, "namedRegex": "^/blog(?:/)?$" }, { "page": "/robots.txt", "regex": "^/robots\\.txt(?:/)?$", "routeKeys": {}, "namedRegex": "^/robots\\.txt(?:/)?$" }, { "page": "/sitemap.xml", "regex": "^/sitemap\\.xml(?:/)?$", "routeKeys": {}, "namedRegex": "^/sitemap\\.xml(?:/)?$" }], "dynamic": [{ "page": "/blog/[...slug]", "regex": "^/blog/(.+?)(?:/)?$", "routeKeys": { "nxtPslug": "nxtPslug" }, "namedRegex": "^/blog/(?<nxtPslug>.+?)(?:/)?$" }], "data": { "static": [], "dynamic": [] } }, "locales": [] };
 var ConfigHeaders = [];
-var PrerenderManifest = { "version": 4, "routes": { "/sitemap.xml": { "initialHeaders": { "cache-control": "public, max-age=0, must-revalidate", "content-type": "application/xml", "x-next-cache-tags": "_N_T_/layout,_N_T_/sitemap.xml/layout,_N_T_/sitemap.xml/route,_N_T_/sitemap.xml/" }, "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/sitemap.xml", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/robots.txt": { "initialHeaders": { "cache-control": "public, max-age=0, must-revalidate", "content-type": "text/plain", "x-next-cache-tags": "_N_T_/layout,_N_T_/robots.txt/layout,_N_T_/robots.txt/route,_N_T_/robots.txt/" }, "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/robots.txt", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/", "dataRoute": "/index.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/about": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/about", "dataRoute": "/about.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog", "dataRoute": "/blog.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/claude-code-nextjs-cloudflare-s3": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/claude-code-nextjs-cloudflare-s3.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/geminiCLI": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/geminiCLI.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/hello-world": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/hello-world.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/intro": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/intro.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/kimi-k2-opencode-tutorial": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/kimi-k2-opencode-tutorial.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/saas_techstack": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/saas_techstack.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "dynamicRoutes": { "/blog/[...slug]": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "routeRegex": "^/blog/(.+?)(?:/)?$", "dataRoute": "/blog/[...slug].rsc", "fallback": null, "dataRouteRegex": "^/blog/(.+?)\\.rsc$", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "notFoundRoutes": [], "preview": { "previewModeId": "760678b8ccdb8e716e3838f374e88f15", "previewModeSigningKey": "6ab1b882cf224a132bad920c830ca6491af51f62af2c4d5c4d75bdc5ca5f6685", "previewModeEncryptionKey": "910e2efe0fbc2b6a95f13917566b18aabd1413ecc1b44efb840bbd278b052408" } };
+var PrerenderManifest = { "version": 4, "routes": { "/robots.txt": { "initialHeaders": { "cache-control": "public, max-age=0, must-revalidate", "content-type": "text/plain", "x-next-cache-tags": "_N_T_/layout,_N_T_/robots.txt/layout,_N_T_/robots.txt/route,_N_T_/robots.txt/" }, "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/robots.txt", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/sitemap.xml": { "initialHeaders": { "cache-control": "public, max-age=0, must-revalidate", "content-type": "application/xml", "x-next-cache-tags": "_N_T_/layout,_N_T_/sitemap.xml/layout,_N_T_/sitemap.xml/route,_N_T_/sitemap.xml/" }, "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/sitemap.xml", "dataRoute": null, "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog", "dataRoute": "/blog.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/about": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/about", "dataRoute": "/about.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/", "dataRoute": "/index.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/claude-code-nextjs-cloudflare-s3": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/claude-code-nextjs-cloudflare-s3.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/geminiCLI": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/geminiCLI.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/hello-world": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/hello-world.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/intro": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/intro.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/kimi-k2-opencode-tutorial": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/kimi-k2-opencode-tutorial.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] }, "/blog/saas_techstack": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "initialRevalidateSeconds": false, "srcRoute": "/blog/[...slug]", "dataRoute": "/blog/saas_techstack.rsc", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "dynamicRoutes": { "/blog/[...slug]": { "experimentalBypassFor": [{ "type": "header", "key": "Next-Action" }, { "type": "header", "key": "content-type", "value": "multipart/form-data;.*" }], "routeRegex": "^/blog/(.+?)(?:/)?$", "dataRoute": "/blog/[...slug].rsc", "fallback": null, "dataRouteRegex": "^/blog/(.+?)\\.rsc$", "allowHeader": ["host", "x-matched-path", "x-prerender-revalidate", "x-prerender-revalidate-if-generated", "x-next-revalidated-tags", "x-next-revalidate-tag-token"] } }, "notFoundRoutes": [], "preview": { "previewModeId": "fb77f59e1e8869592fe891c170b5428e", "previewModeSigningKey": "346f7ef84703c397b921ee8a8d352ed27948f9ec8daddb8d44ef26da179ebb81", "previewModeEncryptionKey": "b113c193a7d358bc5860dd76d2ade0b38df7f427419fffa01cbc4ada2b7248bd" } };
 var MiddlewareManifest = { "version": 3, "middleware": {}, "functions": {}, "sortedMiddleware": [] };
-var AppPathRoutesManifest = { "/robots.txt/route": "/robots.txt", "/sitemap.xml/route": "/sitemap.xml", "/_not-found/page": "/_not-found", "/page": "/", "/blog/page": "/blog", "/blog/[...slug]/page": "/blog/[...slug]", "/about/page": "/about" };
+var AppPathRoutesManifest = { "/sitemap.xml/route": "/sitemap.xml", "/robots.txt/route": "/robots.txt", "/_not-found/page": "/_not-found", "/page": "/", "/about/page": "/about", "/blog/page": "/blog", "/blog/[...slug]/page": "/blog/[...slug]" };
 var FunctionsConfigManifest = { "version": 1, "functions": {} };
 var PagesManifest = { "/_app": "pages/_app.js", "/_error": "pages/_error.js", "/_document": "pages/_document.js", "/404": "pages/404.html" };
 process.env.NEXT_BUILD_ID = BuildId;
@@ -769,6 +812,75 @@ import { Transform } from "node:stream";
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/util.js
 init_util();
 init_logger();
+import { ReadableStream as ReadableStream2 } from "node:stream/web";
+
+// ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/utils/binary.js
+var commonBinaryMimeTypes = /* @__PURE__ */ new Set([
+  "application/octet-stream",
+  // Docs
+  "application/epub+zip",
+  "application/msword",
+  "application/pdf",
+  "application/rtf",
+  "application/vnd.amazon.ebook",
+  "application/vnd.ms-excel",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  // Fonts
+  "font/otf",
+  "font/woff",
+  "font/woff2",
+  // Images
+  "image/bmp",
+  "image/gif",
+  "image/jpeg",
+  "image/png",
+  "image/tiff",
+  "image/vnd.microsoft.icon",
+  "image/webp",
+  // Audio
+  "audio/3gpp",
+  "audio/aac",
+  "audio/basic",
+  "audio/flac",
+  "audio/mpeg",
+  "audio/ogg",
+  "audio/wavaudio/webm",
+  "audio/x-aiff",
+  "audio/x-midi",
+  "audio/x-wav",
+  // Video
+  "video/3gpp",
+  "video/mp2t",
+  "video/mpeg",
+  "video/ogg",
+  "video/quicktime",
+  "video/webm",
+  "video/x-msvideo",
+  // Archives
+  "application/java-archive",
+  "application/vnd.apple.installer+xml",
+  "application/x-7z-compressed",
+  "application/x-apple-diskimage",
+  "application/x-bzip",
+  "application/x-bzip2",
+  "application/x-gzip",
+  "application/x-java-archive",
+  "application/x-rar-compressed",
+  "application/x-tar",
+  "application/x-zip",
+  "application/zip",
+  // Serialized data
+  "application/x-protobuf"
+]);
+function isBinaryContentType(contentType) {
+  if (!contentType)
+    return false;
+  const value = contentType.split(";")[0];
+  return commonBinaryMimeTypes.has(value);
+}
 
 // ../../../../../.npm/_npx/b8f71965aba33be8/node_modules/@opennextjs/aws/dist/core/routing/i18n/index.js
 init_stream();
@@ -1083,13 +1195,12 @@ function convertBodyToReadableStream(method, body) {
     return void 0;
   if (!body)
     return void 0;
-  const readable = new ReadableStream({
+  return new ReadableStream2({
     start(controller) {
       controller.enqueue(body);
       controller.close();
     }
   });
-  return readable;
 }
 var CommonHeaders;
 (function(CommonHeaders2) {
@@ -1135,7 +1246,7 @@ async function hasBeenRevalidated(key, tags, cacheEntry) {
   }
   const lastModified = cacheEntry.lastModified ?? Date.now();
   if (globalThis.tagCache.mode === "nextMode") {
-    return await globalThis.tagCache.hasBeenRevalidated(tags, lastModified);
+    return tags.length === 0 ? false : await globalThis.tagCache.hasBeenRevalidated(tags, lastModified);
   }
   const _lastModified = await globalThis.tagCache.getLastModified(key, lastModified);
   return _lastModified === -1;
@@ -1145,7 +1256,9 @@ function getTagsFromValue(value) {
     return [];
   }
   try {
-    return value.meta?.headers?.["x-next-cache-tags"]?.split(",") ?? [];
+    const cacheTags = value.meta?.headers?.["x-next-cache-tags"]?.split(",") ?? [];
+    delete value.meta?.headers?.["x-next-cache-tags"];
+    return cacheTags;
   } catch (e) {
     return [];
   }
@@ -1231,8 +1344,12 @@ async function generateResult(event, localizedPath, cachedValue, lastModified) {
   const cacheControl = await computeCacheControl(localizedPath, body, event.headers.host, cachedValue.revalidate, lastModified);
   return {
     type: "core",
-    // sometimes other status codes can be cached, like 404. For these cases, we should return the correct status code
-    statusCode: cachedValue.meta?.status ?? 200,
+    // Sometimes other status codes can be cached, like 404. For these cases, we should return the correct status code
+    // Also set the status code to the rewriteStatusCode if defined
+    // This can happen in handleMiddleware in routingHandler.
+    // `NextResponse.rewrite(url, { status: xxx})
+    // The rewrite status code should take precedence over the cached one
+    statusCode: event.rewriteStatusCode ?? cachedValue.meta?.status ?? 200,
     body: toReadableStream(body, false),
     isBase64Encoded: false,
     headers: {
@@ -1280,9 +1397,9 @@ async function cacheInterceptor(event) {
       if (!cachedData?.value) {
         return event;
       }
-      if (cachedData.value?.type === "app") {
+      if (cachedData.value?.type === "app" || cachedData.value?.type === "route") {
         const tags = getTagsFromValue(cachedData.value);
-        const _hasBeenRevalidated = await hasBeenRevalidated(localizedPath, tags, cachedData);
+        const _hasBeenRevalidated = cachedData.shouldBypassTagCache ? false : await hasBeenRevalidated(localizedPath, tags, cachedData);
         if (_hasBeenRevalidated) {
           return event;
         }
@@ -1303,6 +1420,21 @@ async function cacheInterceptor(event) {
               ...cacheControl
             },
             isBase64Encoded: false
+          };
+        }
+        case "route": {
+          const cacheControl = await computeCacheControl(localizedPath, cachedData.value.body, host, cachedData.value.revalidate, cachedData.lastModified);
+          const isBinary = isBinaryContentType(String(cachedData.value.meta?.headers?.["content-type"]));
+          return {
+            type: "core",
+            statusCode: event.rewriteStatusCode ?? cachedData.value.meta?.status ?? 200,
+            body: toReadableStream(cachedData.value.body, isBinary),
+            headers: {
+              ...cacheControl,
+              ...cachedData.value.meta?.headers,
+              vary: VARY_HEADER
+            },
+            isBase64Encoded: isBinary
           };
         }
         default:
@@ -1749,7 +1881,7 @@ function getStaticAPIRoutes() {
   });
   const dynamicRoutePages = new Set(RoutesManifest.routes.dynamic.map(({ page }) => page));
   const pagesStaticAPIRoutes = Object.keys(PagesManifest).filter((route) => route.startsWith("/api/") && !dynamicRoutePages.has(route)).map(createRouteDefinition);
-  const appPathsStaticAPIRoutes = Object.values(AppPathRoutesManifest).filter((route) => route.startsWith("/api/") || route === "/api" && !dynamicRoutePages.has(route)).map(createRouteDefinition);
+  const appPathsStaticAPIRoutes = Object.values(AppPathRoutesManifest).filter((route) => (route.startsWith("/api/") || route === "/api") && !dynamicRoutePages.has(route)).map(createRouteDefinition);
   return [...pagesStaticAPIRoutes, ...appPathsStaticAPIRoutes];
 }
 
@@ -2150,7 +2282,7 @@ async function handleMiddleware(internalEvent, initialSearch, middlewareLoader =
     cookies: internalEvent.cookies,
     remoteAddress: internalEvent.remoteAddress,
     isExternalRewrite,
-    rewriteStatusCode: statusCode
+    rewriteStatusCode: rewriteUrl && !isExternalRewrite ? statusCode : void 0
   };
 }
 
@@ -2214,10 +2346,18 @@ async function routingHandler(event, { assetResolver }) {
     if (isInternalResult(middlewareEventOrResult)) {
       return middlewareEventOrResult;
     }
-    headers = {
-      ...middlewareEventOrResult.responseHeaders,
-      ...headers
-    };
+    const middlewareHeadersPrioritized = globalThis.openNextConfig.dangerous?.middlewareHeadersOverrideNextConfigHeaders ?? false;
+    if (middlewareHeadersPrioritized) {
+      headers = {
+        ...headers,
+        ...middlewareEventOrResult.responseHeaders
+      };
+    } else {
+      headers = {
+        ...middlewareEventOrResult.responseHeaders,
+        ...headers
+      };
+    }
     let isExternalRewrite = middlewareEventOrResult.isExternalRewrite ?? false;
     eventOrResult = middlewareEventOrResult;
     if (!isExternalRewrite) {
@@ -2381,7 +2521,9 @@ var defaultHandler = async (internalEvent, options) => {
         };
       }
     }
-    result.headers[INTERNAL_EVENT_REQUEST_ID] = requestId;
+    if (process.env.OPEN_NEXT_REQUEST_ID_HEADER || globalThis.openNextDebug) {
+      result.headers[INTERNAL_EVENT_REQUEST_ID] = requestId;
+    }
     debug("Middleware response", result);
     return result;
   });
