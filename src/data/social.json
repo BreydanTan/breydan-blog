@@ -3,7 +3,7 @@
     "id": 1,
     "name": "GitHub",
     "username": "BreydanTan",
-    "image": "https://avatars.githubusercontent.com/u/36994388?v=4",
+    "image": "/social/social-github.jpg",
     "url": "https://github.com/BreydanTan"
   },
   {
@@ -17,7 +17,7 @@
     "id": 3,
     "name": "X (Twitter)",
     "username": "BreydanT94338",
-    "image": "https://pbs.twimg.com/profile_images/1800097879624728576/Wz3QLnzU_400x400.jpg",
+    "image": "/social/social-twitter.jpg",
     "url": "https://x.com/BreydanT94338"
   }
 ]
