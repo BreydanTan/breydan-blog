@@ -50,7 +50,7 @@ export default function GiscusComments() {
       reactionsEnabled="1"
       emitMetadata="0"
       inputPosition="bottom"
-      theme="preferred_color_scheme"
+      theme="light_protanopia"
       lang="en"
       loading="lazy"
     />
