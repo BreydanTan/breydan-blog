@@ -1,3 +1,11 @@
+---
+title: "Building an AI-Powered Content Collection System for Obsidian with Claude Code"
+date: "2025-01-15"
+summary: "How I automated my second brain with RSS feeds, web scraping, and AI translation"
+featured: true
+keywords: ["AI", "Obsidian", "Automation", "RSS", "Web Scraping"]
+---
+
 # Building an AI-Powered Content Collection System for Obsidian with Claude Code
 
 **How I automated my second brain with RSS feeds, web scraping, and AI translation**
