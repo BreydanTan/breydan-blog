@@ -1,4 +1,4 @@
-globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.isNextAfter15 = true;globalThis.openNextDebug = false;globalThis.openNextVersion = "3.7.4";
+globalThis.disableIncrementalCache = false;globalThis.disableDynamoDBCache = false;globalThis.isNextAfter15 = true;globalThis.openNextDebug = false;globalThis.openNextVersion = "3.8.5";
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
@@ -98,7 +98,7 @@ async function hasBeenRevalidated(key, tags, cacheEntry) {
   }
   const lastModified = cacheEntry.lastModified ?? Date.now();
   if (globalThis.tagCache.mode === "nextMode") {
-    return await globalThis.tagCache.hasBeenRevalidated(tags, lastModified);
+    return tags.length === 0 ? false : await globalThis.tagCache.hasBeenRevalidated(tags, lastModified);
   }
   const _lastModified = await globalThis.tagCache.getLastModified(key, lastModified);
   return _lastModified === -1;
@@ -108,7 +108,9 @@ function getTagsFromValue(value) {
     return [];
   }
   try {
-    return value.meta?.headers?.["x-next-cache-tags"]?.split(",") ?? [];
+    const cacheTags = value.meta?.headers?.["x-next-cache-tags"]?.split(",") ?? [];
+    delete value.meta?.headers?.["x-next-cache-tags"];
+    return cacheTags;
   } catch (e) {
     return [];
   }
@@ -206,7 +208,7 @@ var commonBinaryMimeTypes = /* @__PURE__ */ new Set([
 function isBinaryContentType(contentType) {
   if (!contentType)
     return false;
-  const value = contentType?.split(";")[0] ?? "";
+  const value = contentType.split(";")[0];
   return commonBinaryMimeTypes.has(value);
 }
 
