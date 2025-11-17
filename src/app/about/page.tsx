@@ -10,7 +10,7 @@ export default function AboutPage() {
         <section className="text-center mb-16 md:mb-20">
           <div className="relative inline-block mb-8">
             <Image
-              src="https://elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com/blog/avatar.png"
+              src="/images/avatar1.jpg"
               alt="Breydan Tan"
               width={160}
               height={160}

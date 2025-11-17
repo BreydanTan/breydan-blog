@@ -53,6 +53,13 @@ export function SocialCards() {
           const expandedOffset = index * 85;
           const baseRotation = index * 5;
 
+          // Calculate transition properties separately
+          const transitionDuration = isHovered ? '0.35s' : '0.6s';
+          const transitionTimingFunction = isHovered
+            ? 'cubic-bezier(0.34, 1.5, 0.64, 1)'
+            : 'cubic-bezier(0.34, 1.2, 0.64, 1)';
+          const transitionDelay = isContainerHovered && !isHovered ? `${index * 0.03}s` : '0s';
+
           return (
             <a
               key={item.id}
@@ -67,10 +74,10 @@ export function SocialCards() {
                   ? `translateX(${expandedOffset}px) rotate(0deg)`
                   : `translateX(${baseOffset}px) rotate(${baseRotation}deg)`,
                 zIndex: isHovered ? 9999 : isContainerHovered ? 100 + index : socialData.length - index,
-                transition: isHovered
-                  ? 'transform 0.35s cubic-bezier(0.34, 1.5, 0.64, 1), z-index 0s linear 0s, box-shadow 0.3s ease'
-                  : 'transform 0.6s cubic-bezier(0.34, 1.2, 0.64, 1), z-index 0s linear ' + (isContainerHovered ? '0s' : '0.6s') + ', box-shadow 0.3s ease',
-                transitionDelay: isContainerHovered ? `${index * 0.03}s` : '0s',
+                transitionProperty: 'transform, z-index, box-shadow',
+                transitionDuration: `${transitionDuration}, 0s, 0.3s`,
+                transitionTimingFunction: `${transitionTimingFunction}, linear, ease`,
+                transitionDelay: `${transitionDelay}, ${isContainerHovered ? '0s' : '0.6s'}, 0s`,
               }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
@@ -83,7 +90,9 @@ export function SocialCards() {
                   className="object-cover"
                   style={{
                     transform: isHovered ? 'scale(1.15)' : 'scale(1)',
-                    transition: 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    transitionProperty: 'transform',
+                    transitionDuration: '0.4s',
+                    transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
                   }}
                   sizes="72px"
                   unoptimized
@@ -93,7 +102,8 @@ export function SocialCards() {
                   className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
                   style={{
                     opacity: isHovered ? 1 : 0,
-                    transition: 'opacity 0.3s',
+                    transitionProperty: 'opacity',
+                    transitionDuration: '0.3s',
                   }}
                 />
                 {/* Username */}
@@ -101,7 +111,8 @@ export function SocialCards() {
                   className="absolute bottom-1.5 left-1.5 z-10"
                   style={{
                     opacity: isHovered ? 1 : 0,
-                    transition: 'opacity 0.3s',
+                    transitionProperty: 'opacity',
+                    transitionDuration: '0.3s',
                   }}
                 >
                   <span className="text-[8px] text-white font-medium drop-shadow-lg">
