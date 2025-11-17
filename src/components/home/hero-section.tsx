@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { Button } from "@/components/ui/button";
 import { SocialCards } from "@/components/social-cards";
-import { Avatar3D } from "@/components/Avatar3D";
+import { OfficeScene3D } from "@/components/OfficeScene3D";
 import { config } from "@/lib/config";
 
 export function HeroSection() {
@@ -75,7 +75,7 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Right Column - 3D Avatar */}
+          {/* Right Column - 3D Office Scene */}
           <motion.div
             className="relative hidden lg:block"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -88,10 +88,10 @@ export function HeroSection() {
             }}
           >
             <div className="aspect-square lg:h-[400px] xl:h-[450px] rounded-3xl bg-gradient-to-br from-primary/5 via-background to-accent/5 border-2 border-primary/15 overflow-hidden relative">
-              {/* 3D Avatar */}
+              {/* 3D Office Scene */}
               {mounted && (
                 <div className="w-full h-full">
-                  <Avatar3D />
+                  <OfficeScene3D />
                 </div>
               )}
 
