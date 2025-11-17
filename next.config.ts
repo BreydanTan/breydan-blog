@@ -11,7 +11,20 @@ const nextConfig: NextConfig = {
   },
   images: {
     unoptimized: true, // Required for static export
-    domains: ['media.licdn.com', 'elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'media.licdn.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'elasticbeanstalk-ap-southeast-1-733447040549.s3.ap-southeast-1.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.amazonaws.com',
+      },
+    ],
   },
   // JavaScript optimization for better Best Practices score
   compiler: {
