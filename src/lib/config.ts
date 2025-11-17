@@ -27,7 +27,7 @@ export const config = {
   author: {
     name: "Breydan Tan",
     email: "breydantech@gmail.com",
-    bio: "AI enthusiast exploring the intersection of technology and innovation. I share insights on modern development, AI integration, and the tools shaping our digital future. For more about my background and journey, check out the About Me page.",
+    bio: "Product designer and full-stack developer. Building AI-powered SaaS products.",
   },
   social: {
     github: "https://github.com/BreydanTan",
