@@ -1,218 +1,87 @@
-<<<<<<< HEAD
-<h1 align=center>Next.js Blog Template | Ladder Theme | <a href="https://guangzhengli.com">Blog</a></h1>
+# Breydan Personal Blog
 
-This repository is a Next.js implementation of [hugo-ladder-theme](https://github.com/guangzhengli/hugo-theme-ladder).
+个人技术博客，分享 AI、全栈开发、SaaS 开发相关内容。
 
-This is a Next.js blog template. Here are some basic instructions on how to use it.
+基于 [hugo-ladder-theme](https://github.com/guangzhengli/hugo-theme-ladder) 的 Next.js 实现。
 
-## How to develop locally?
+## 快速开始
 
+### 本地开发
 ```bash
 npm install
-
-
 npm run dev
 ```
 
-## How to deploy
+访问 http://localhost:3000
 
-Clone or fork this repository locally, modify the configuration as described below, and then deploy it on [Vercel](https://vercel.com) by selecting this repository.
-
-All deployment configurations can be left at their default settings; no special configuration is needed.
-
-If you need to use edge or fluid compute, please modify the code or Vercel configuration yourself.
-
-# Blog Configuration
-
-## 1. How to write a blog post
-
-Blog files for this repository should be placed in the `src/content/blog` directory. They can be Markdown or MDX files.
-
-The following metadata needs to be configured by the user as needed:
-
-- `title`: Blog post title
-- `date`: Blog post publication date
-- `updated`: Blog post update date
-- `keywords`: Blog post keywords for SEO optimization
-- `featured`: Whether to feature on the homepage
-- `summary`: Blog post summary
-
-## 2. Blog Configuration
-
-All blog configurations are centralized in the `src/lib/config.ts` file. The advantages of this are:
-
-1.  **Centralized Management**: All configurations are in one file, making it easy to maintain and modify.
-2.  **Type Safety**: Using TypeScript provides type checking and autocompletion.
-3.  **Reusability**: Avoids scattering duplicate configurations across various files.
-4.  **Consistency**: Ensures the same configuration values are used everywhere.
-
-### 2.1 Basic Site Configuration
-
-```typescript
-site: {
-  title: "Your Blog Title",
-  name: "Your Blog Name",
-  description: "Blog description",
-  keywords: ["keyword1", "keyword2"],
-  url: "https://your-domain.com",
-  baseUrl: "https://your-domain.com",
-  image: "https://your-domain.com/og-image.png",
-  favicon: {
-    ico: "/favicon.ico",
-    png: "/favicon.png",
-    svg: "/favicon.svg",
-    appleTouchIcon: "/favicon.png",
-  },
-  manifest: "/site.webmanifest",
-}
-```
-
-These configurations are used for:
-- Displaying basic website information
-- SEO optimization
-- Browser tab icon
-- Social media sharing previews
-
-### 2.2 Author Information Configuration
-
-```typescript
-author: {
-  name: "Your Name",
-  email: "your-email",
-  bio: "Personal bio",
-}
-```
-
-Author information will be used for:
-- Homepage display
-- RSS feed information
-- Author information in blog posts
-
-### 2.3 Social Media Configuration
-
-```typescript
-social: {
-  github: "https://github.com/your-username",
-  x: "https://x.com/your-username",
-  xiaohongshu: "https://www.xiaohongshu.com/user/profile/your-id",
-  wechat: "your-wechat-qr-code-image-link",
-  buyMeACoffee: "https://www.buymeacoffee.com/your-username",
-}
-```
-
-These links will be displayed in:
-- The social media links section on the homepage
-- Social media icons in the navigation bar
-
-### 2.4 Comment System Configuration
-
-```typescript
-giscus: {
-  repo: "your-github-repo-name",
-  repoId: "repository-ID",
-  categoryId: "category-ID",
-}
-```
-
-To use Giscus as the comment system, you need to:
-1.  Install the Giscus app on GitHub
-2.  Enable Discussions in your repository
-3.  Get the configuration information and fill it in here
-
-### 2.5 Navigation Menu Configuration
-
-```typescript
-navigation: {
-  main: [
-    { 
-      title: "Blog", 
-      href: "/blog",
-    },
-    // You can add more navigation items
-  ],
-}
-```
-
-This is where you configure the website's navigation menu. It supports:
-- Regular links
-- Dropdown menus with sub-items
-
-### 2.6 SEO Configuration
-
-```typescript
-seo: {
-  metadataBase: new URL("https://your-domain.com"),
-  alternates: {
-    canonical: './',
-  },
-  openGraph: {
-    type: "website" as const,
-    locale: "en_US",
-  },
-  twitter: {
-    card: "summary_large_image" as const,
-    creator: "@your-twitter-handle",
-  },
-}
-```
-
-These configurations are used for:
-- Search engine optimization
-- Social media share cards
-- Website metadata
-
-### 2.7 RSS Feed Configuration
-
-```typescript
-rss: {
-  title: "Your Blog Title",
-  description: "Blog description",
-  feedLinks: {
-    rss2: "/rss.xml",
-    json: "/feed.json",
-    atom: "/atom.xml",
-  },
-}
-```
-
-These configurations are used to generate:
-- RSS 2.0 feed
-- JSON Feed
-- Atom feed
-
-## 3. How to Modify the Configuration
-
-1.  Open the `src/lib/config.ts` file
-2.  Modify the corresponding configuration items according to your needs
-3.  After saving the file, Next.js will automatically rebuild and apply the new configuration
-
-Notes:
-- Ensure all URLs are valid
-- Image links should be accessible
-- Social media links must be complete URLs
-- After modifying the configuration, it is recommended to check the website's:
-  - Homepage display
-  - Navigation menu
-  - SEO information
-  - Social media sharing effectiveness
-  - RSS feed
-
-## 4. How to Generate the RSS Feed
-
-Modify the configuration in the `scripts/generate-rss.js` file, then run:
-
+### 构建
 ```bash
-npm run generate-rss
+npm run build
 ```
 
-## 5. How to Generate the Sitemap
-
-Modify the configuration in the `scripts/generate-sitemap.js` file, then run:
-
+### 部署到 Cloudflare Pages
 ```bash
-npm run generate-sitemap
+npm run build:cloudflare
+npm run deploy
 ```
-=======
-# breydan-blog
-personal blog
->>>>>>> e70e1f9c6f8ea2a735a9075ad4517cafecafe490
+
+## 文档
+
+- **[使用手册](./USER_MANUAL.md)** - 详细的开发、部署和配置指南
+- **[优化方案](./OPTIMIZATION_PLAN.md)** - 项目优化建议和实施计划
+- **[部署指南](./DEPLOYMENT.md)** - Cloudflare 部署说明
+
+## 主要功能
+
+- ✅ Next.js 15 + React 19 + TypeScript
+- ✅ TailwindCSS 4 样式系统
+- ✅ MDX 支持 (Markdown + React 组件)
+- ✅ Giscus 评论系统
+- ✅ RSS/Atom/JSON Feed
+- ✅ 自动生成 Sitemap
+- ✅ SEO 优化
+- ✅ 代码高亮和数学公式支持
+- ✅ Cloudflare Pages 部署
+
+## 配置
+
+所有博客配置都集中在 `src/lib/config.ts` 文件中，包括：
+- 站点基本信息
+- 作者信息
+- 社交媒体链接
+- Giscus 评论配置
+- 导航菜单
+- SEO 设置
+
+详细配置说明请查看 [使用手册](./USER_MANUAL.md#配置说明)。
+
+## 编写博客
+
+博客文章放在 `src/content/blog/` 目录，支持 `.md` 和 `.mdx` 格式。
+
+示例 Front Matter:
+```markdown
+---
+title: "文章标题"
+date: "2025-01-17"
+updated: "2025-01-17"
+keywords: ["Next.js", "博客"]
+featured: true
+summary: "文章摘要"
+---
+
+文章内容...
+```
+
+详细写作指南请查看 [使用手册](./USER_MANUAL.md#博客文章管理)。
+
+## 许可证
+
+MIT
+
+## 联系方式
+
+- **作者**: Breydan Tan
+- **邮箱**: breydantech@gmail.com
+- **GitHub**: [@BreydanTan](https://github.com/BreydanTan)
+- **博客**: https://blog.breydan.com
