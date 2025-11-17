@@ -77,8 +77,8 @@ export function BlogCard({ blog, featured = false }: BlogCardProps) {
           <div className="relative aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 to-primary/5 mb-4">
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-4xl font-brand text-primary/40">
-                {blog.title.charAt(0)}
+              <span className="text-4xl font-brand text-primary/40" suppressHydrationWarning>
+                {blog.title.slice(0, 1).toUpperCase()}
               </span>
             </div>
           </div>

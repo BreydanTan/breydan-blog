@@ -76,8 +76,8 @@ export function HeroSection() {
             <div className="aspect-square lg:aspect-auto lg:h-[400px] rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/20 p-8 flex items-center justify-center">
               <div className="text-center space-y-4">
                 <div className="w-32 h-32 mx-auto rounded-full bg-primary/20 flex items-center justify-center">
-                  <span className="text-6xl font-brand text-primary">
-                    {config.author.name.charAt(0)}
+                  <span className="text-6xl font-brand text-primary" suppressHydrationWarning>
+                    {config.author.name.slice(0, 1).toUpperCase()}
                   </span>
                 </div>
                 <p className="text-xl font-brand text-primary">
