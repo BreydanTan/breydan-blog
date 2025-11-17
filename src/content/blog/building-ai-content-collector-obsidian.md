@@ -1,6 +1,6 @@
 ---
 title: "Building an AI-Powered Content Collection System for Obsidian with Claude Code"
-date: "2025-01-15"
+date: "2025-10-15"
 summary: "How I automated my second brain with RSS feeds, web scraping, and AI translation"
 featured: true
 keywords: ["AI", "Obsidian", "Automation", "RSS", "Web Scraping"]
@@ -112,6 +112,7 @@ Before we start, you'll need:
 ### Python Packages
 
 We'll install these later:
+
 - `feedparser` - RSS parsing
 - `requests` - HTTP requests
 - `beautifulsoup4` - HTML parsing
@@ -203,6 +204,7 @@ This downloads Chromium browser needed for web scraping.
 ### Core Concept
 
 RSS feeds provide article metadata (title, URL, summary) but not full content. We'll:
+
 1. Collect from multiple RSS sources
 2. Parse article metadata
 3. Store in a standardized format
@@ -359,25 +361,31 @@ def collect_all_sources(sources_config: Dict, max_per_source: int = 20) -> List[
 ### Key Implementation Details
 
 **1. User-Agent Header**
+
 ```python
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ...'
 }
 ```
+
 Many RSS feeds block requests without a proper User-Agent header. This was causing 403 errors initially.
 
 **2. Using `requests` + `feedparser`**
+
 ```python
 response = requests.get(self.url, headers=headers, timeout=10)
 feed = feedparser.parse(response.content)
 ```
+
 We use `requests` to fetch with custom headers, then `feedparser` to parse. Direct `feedparser.parse(url)` doesn't support custom headers.
 
 **3. Deduplication via MD5**
+
 ```python
 def _generate_id(self, url: str) -> str:
     return hashlib.md5(url.encode()).hexdigest()[:12]
 ```
+
 Generate unique ID from URL for deduplication tracking.
 
 ---
@@ -523,25 +531,25 @@ In `config.yaml`:
 
 ```yaml
 web_crawling:
-  enabled: true  # Enable web scraping
-  mode: "selective"  # all=crawl everything | selective=only high-priority
+  enabled: true # Enable web scraping
+  mode: "selective" # all=crawl everything | selective=only high-priority
 
   strategy:
-    high_priority_sources:  # Always crawl these sources
+    high_priority_sources: # Always crawl these sources
       - "Anthropic Blog"
       - "OpenAI Blog"
       - "Google AI Blog"
       - "DeepMind Blog"
       - "Product Hunt - AI Products"
 
-    skip_domains:  # Never crawl these (RSS summary is enough)
+    skip_domains: # Never crawl these (RSS summary is enough)
       - "twitter.com"
       - "youtube.com"
 
   performance:
-    max_concurrent: 3  # Crawl 3 pages simultaneously
-    timeout: 30  # Timeout per page (seconds)
-    retry_times: 2  # Retry on failure
+    max_concurrent: 3 # Crawl 3 pages simultaneously
+    timeout: 30 # Timeout per page (seconds)
+    retry_times: 2 # Retry on failure
 ```
 
 ### Playwright Browser Setup
@@ -732,6 +740,7 @@ Please translate the following English content to Chinese:
 The beauty of the OpenAI client library: **it works with any compatible API!**
 
 Supported providers:
+
 - OpenAI (GPT-4, GPT-3.5)
 - Anthropic Claude (via proxy)
 - Google Gemini (via OpenRouter)
@@ -742,20 +751,21 @@ Configuration in `config.yaml`:
 
 ```yaml
 ai:
-  provider: "openai"  # OpenAI-compatible API
-  base_url: "http://your-api-endpoint/v1"  # Your API endpoint
+  provider: "openai" # OpenAI-compatible API
+  base_url: "http://your-api-endpoint/v1" # Your API endpoint
   api_key: "sk-your-api-key-here"
-  model: "gemini-2.5-pro-preview-06-05"  # Or gpt-4, claude-3-5-sonnet, etc.
+  model: "gemini-2.5-pro-preview-06-05" # Or gpt-4, claude-3-5-sonnet, etc.
 
   translation:
-    enabled: true  # Enable auto-translation
-    auto_detect: true  # Auto-detect English content
-    bilingual_format: true  # Generate bilingual output
+    enabled: true # Enable auto-translation
+    auto_detect: true # Auto-detect English content
+    bilingual_format: true # Generate bilingual output
 ```
 
 ### Example: Using Different Providers
 
 **OpenAI:**
+
 ```yaml
 ai:
   base_url: "https://api.openai.com/v1"
@@ -764,6 +774,7 @@ ai:
 ```
 
 **OpenRouter (supports multiple models):**
+
 ```yaml
 ai:
   base_url: "https://openrouter.ai/api/v1"
@@ -772,10 +783,11 @@ ai:
 ```
 
 **Local Ollama:**
+
 ```yaml
 ai:
   base_url: "http://localhost:11434/v1"
-  api_key: "ollama"  # Dummy key
+  api_key: "ollama" # Dummy key
   model: "llama2"
 ```
 
@@ -1071,6 +1083,7 @@ has_translation: true
 ---
 
 # UnisonDB – 专为边缘AI设计的日志原生数据库
+
 ## UnisonDB – A Log-Native Database for Edge AI
 
 > **✅ Full Article** | 🌐 Bilingual
@@ -1090,11 +1103,12 @@ has_translation: true
 
 ---
 
-*Auto-collected by MyBrain on 2025-11-09 10:30*
-*Full web content | Offline reading | 🌐 AI translation*
+_Auto-collected by MyBrain on 2025-11-09 10:30_
+_Full web content | Offline reading | 🌐 AI translation_
 ```
 
 This format allows you to:
+
 - Read Chinese translation first for quick comprehension
 - Reference English original for technical terms
 - Learn vocabulary in both languages
@@ -1108,7 +1122,7 @@ The brain of the system: `config.yaml`
 ```yaml
 # Collection schedule
 schedule:
-  collection_time: "08:00"  # Daily at 8 AM
+  collection_time: "08:00" # Daily at 8 AM
   timezone: "Asia/Shanghai"
 
 # Content sources
@@ -1225,14 +1239,14 @@ ai:
   max_summary_length: 200
 
   translation:
-    enabled: true  # Enable auto-translation
-    auto_detect: true  # Auto-detect English content
-    bilingual_format: true  # Generate bilingual format
+    enabled: true # Enable auto-translation
+    auto_detect: true # Auto-detect English content
+    bilingual_format: true # Generate bilingual format
 
 # Web scraping
 web_crawling:
   enabled: true
-  mode: "selective"  # all | selective
+  mode: "selective" # all | selective
 
   strategy:
     high_priority_sources:
@@ -1465,6 +1479,7 @@ crontab -e
 ```
 
 **Breakdown:**
+
 - `0 8 * * *` - At minute 0, hour 8, every day
 - `cd /path/to/_automation` - Navigate to project directory
 - `&&` - AND operator (only run next command if cd succeeds)
@@ -1620,6 +1635,7 @@ cat /tmp/mybrain_collection.log
 **Problem:** Some RSS feeds block requests without User-Agent.
 
 **Solution:**
+
 ```python
 headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
@@ -1632,6 +1648,7 @@ response = requests.get(url, headers=headers, timeout=10)
 **Problem:** `pip install` hangs for 10+ minutes resolving dependencies.
 
 **Solution:** Pin specific versions in `requirements.txt`:
+
 ```txt
 # Bad - too loose
 crawl4ai>=0.3.0
@@ -1641,6 +1658,7 @@ crawl4ai==0.4.24
 ```
 
 Also pin `urllib3`:
+
 ```txt
 urllib3==2.2.3
 ```
@@ -1652,6 +1670,7 @@ urllib3==2.2.3
 **Root cause:** Translation service only sees RSS summary, not full web content.
 
 **Solution:** Pass full content to translation service:
+
 ```python
 # If full content available, add to article temporarily
 if full_content:
@@ -1669,6 +1688,7 @@ if full_content and 'content' in article:
 **Problem:** `Error: Executable doesn't exist at /path/to/chromium`
 
 **Solution:**
+
 ```bash
 playwright install chromium
 ```
@@ -1680,16 +1700,19 @@ Make sure to run this in your virtual environment if using one.
 **Debugging steps:**
 
 1. **Check if cron is running:**
+
 ```bash
 ps aux | grep cron
 ```
 
 2. **Check cron job syntax:**
+
 ```bash
 crontab -l
 ```
 
 3. **Check absolute paths:**
+
 ```bash
 # Find Python path
 which python3
@@ -1699,6 +1722,7 @@ which python3
 ```
 
 4. **Check environment variables:**
+
 ```bash
 # Add to crontab
 SHELL=/bin/bash
@@ -1708,6 +1732,7 @@ PATH=/usr/local/bin:/usr/bin:/bin
 ```
 
 5. **Check logs:**
+
 ```bash
 tail -50 /tmp/mybrain_collection.log
 
@@ -1721,6 +1746,7 @@ log show --predicate 'process == "cron"' --last 1h  # macOS
 **Problem:** Translation fails after many requests.
 
 **Solution:** Add rate limiting:
+
 ```python
 import time
 
@@ -1730,6 +1756,7 @@ for article in articles:
 ```
 
 Or implement retry logic:
+
 ```python
 def translate_with_retry(self, text, max_retries=3):
     for attempt in range(max_retries):
@@ -1757,6 +1784,7 @@ pip install -r requirements.txt
 ```
 
 Benefits:
+
 - ✅ Isolated dependencies
 - ✅ No conflicts with system Python
 - ✅ Easy to reproduce on other machines
@@ -1772,6 +1800,7 @@ git commit -m "Initial commit"
 ```
 
 Add `.gitignore`:
+
 ```
 venv/
 _meta/*.json
@@ -1796,6 +1825,7 @@ ai:
 ```
 
 Load both:
+
 ```python
 import yaml
 
@@ -1916,6 +1946,7 @@ echo "✅ Backup complete: $BACKUP_DIR"
 ```
 
 Schedule it:
+
 ```bash
 0 9 * * * /path/to/backup.sh
 ```
@@ -1938,6 +1969,7 @@ Congratulations! You've built a fully automated AI-powered content collection sy
 ### Next Steps
 
 **Enhance the system:**
+
 1. **Add more sources** - Reddit, Twitter, newsletters
 2. **Implement AI summarization** - Generate TL;DR with GPT-4
 3. **Smart filtering** - Use AI to score relevance to your interests
@@ -1945,6 +1977,7 @@ Congratulations! You've built a fully automated AI-powered content collection sy
 5. **Mobile sync** - Use Obsidian Sync or Git for mobile access
 
 **Advanced features:**
+
 - **Semantic search** - Use embeddings for better search
 - **Topic clustering** - Automatically group related articles
 - **Readability scoring** - Prioritize easy-to-read content
@@ -1968,16 +2001,19 @@ Automation ensures consistency. You don't need willpower to stay updated—the s
 ### Resources
 
 **Code Repository:**
+
 - Full source code: [GitHub link]
 - Example config files
 - Troubleshooting guide
 
 **Further Reading:**
+
 - [Crawl4AI Documentation](https://crawl4ai.com)
 - [Obsidian Documentation](https://help.obsidian.md)
 - [Building a Second Brain](https://www.buildingasecondbrain.com/)
 
 **My Setup:**
+
 - **Sources:** 11 AI-focused RSS feeds
 - **Collection:** Daily at 8 AM
 - **Volume:** ~100 articles/day → 8-15 new articles
@@ -1990,6 +2026,7 @@ Automation ensures consistency. You don't need willpower to stay updated—the s
 Built with **Claude Code** - Anthropic's AI pair programming assistant. This entire system was developed in ~2 hours through natural language conversation with Claude Code on the web.
 
 Claude Code helps with:
+
 - Architecture design
 - Code generation
 - Debugging
@@ -2006,5 +2043,5 @@ Try it yourself: [claude.ai/code](https://claude.ai/code)
 
 ---
 
-*Last updated: November 9, 2025*
-*License: MIT*
+_Last updated: November 9, 2025_
+_License: MIT_
