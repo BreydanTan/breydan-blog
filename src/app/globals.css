@@ -1,3 +1,7 @@
+/* Import BlogForRef-inspired fonts */
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -6,7 +10,8 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-brand: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -45,39 +50,55 @@
 
 :root {
   --radius: 0.5rem;
-  
-  /* Anthropic-inspired color palette */
-  --background: #ffffff;
-  --foreground: #1a1a1a;
+
+  /* BlogForRef-inspired retro blue palette */
+  --background: #fdfaf5;
+  --foreground: #3f4a5a;
   --card: #ffffff;
-  --card-foreground: #1a1a1a;
+  --card-foreground: #3f4a5a;
   --popover: #ffffff;
-  --popover-foreground: #1a1a1a;
-  --primary: #2563eb;
+  --popover-foreground: #3f4a5a;
+  --primary: #2d6dc3;
   --primary-foreground: #ffffff;
-  --secondary: #f9fafb;
-  --secondary-foreground: #1a1a1a;
-  --muted: #f9fafb;
-  --muted-foreground: #6b7280;
-  --accent: #f9fafb;
-  --accent-foreground: #1a1a1a;
+  --primary-light: #8fb9ff;
+  --primary-lighter: #6da7ff;
+  --primary-strong: #0066ff;
+  --secondary: #fdfaf5;
+  --secondary-foreground: #3f4a5a;
+  --muted: #edf1f8;
+  --muted-foreground: #677487;
+  --accent: #fad13b;
+  --accent-foreground: #3f4a5a;
   --destructive: #ef4444;
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-  --ring: #2563eb;
-  
+  --border: #dfe4ed;
+  --input: #dfe4ed;
+  --ring: #2d6dc3;
+
+  /* Neutral colors (blue-tinted grays) */
+  --neutral-50: #f7f9fc;
+  --neutral-100: #edf1f8;
+  --neutral-200: #dfe4ed;
+  --neutral-300: #c5cedb;
+  --neutral-400: #92a1b7;
+  --neutral-500: #677487;
+  --neutral-600: #4f5a6d;
+  --neutral-700: #3f4a5a;
+  --neutral-800: #2c3542;
+  --neutral-900: #19222f;
+  --neutral-950: #10161f;
+
   /* Text colors */
-  --text-primary: #1a1a1a;
-  --text-secondary: #6b7280;
-  --text-muted: #9ca3af;
-  
+  --text-primary: #2d6dc3;
+  --text-secondary: #3f4a5a;
+  --text-muted: #677487;
+
   /* Link colors */
-  --link: #2563eb;
-  --link-hover: #1d4ed8;
-  
+  --link: #2d6dc3;
+  --link-hover: #0066ff;
+
   /* Background variations */
-  --background-subtle: #f9fafb;
-  --background-muted: #f3f4f6;
+  --background-subtle: #faf9f5;
+  --background-muted: #edf1f8;
   
   /* Spacing scale */
   --space-1: 0.25rem;  /* 4px */
@@ -114,37 +135,40 @@
 }
 
 .dark {
-  --background: #0f0f0f;
-  --foreground: #fafafa;
-  --card: #1a1a1a;
-  --card-foreground: #fafafa;
-  --popover: #1a1a1a;
-  --popover-foreground: #fafafa;
-  --primary: #3b82f6;
+  --background: #0b1220;
+  --foreground: #c5cedb;
+  --card: #0f1b2d;
+  --card-foreground: #c5cedb;
+  --popover: #0f1b2d;
+  --popover-foreground: #c5cedb;
+  --primary: #3884eb;
   --primary-foreground: #ffffff;
-  --secondary: #262626;
-  --secondary-foreground: #fafafa;
-  --muted: #262626;
-  --muted-foreground: #a3a3a3;
-  --accent: #262626;
-  --accent-foreground: #fafafa;
+  --primary-light: #8fb9ff;
+  --primary-lighter: #bcd8ff;
+  --primary-strong: #0066ff;
+  --secondary: #0f1b2d;
+  --secondary-foreground: #c5cedb;
+  --muted: #19222f;
+  --muted-foreground: #92a1b7;
+  --accent: #fad13b;
+  --accent-foreground: #c5cedb;
   --destructive: #ef4444;
-  --border: #404040;
-  --input: #404040;
-  --ring: #3b82f6;
-  
+  --border: #3f4a5a;
+  --input: #3f4a5a;
+  --ring: #3884eb;
+
   /* Dark mode text colors */
-  --text-primary: #fafafa;
-  --text-secondary: #a3a3a3;
-  --text-muted: #737373;
-  
+  --text-primary: #3884eb;
+  --text-secondary: #c5cedb;
+  --text-muted: #92a1b7;
+
   /* Dark mode link colors */
-  --link: #60a5fa;
-  --link-hover: #3b82f6;
-  
+  --link: #3884eb;
+  --link-hover: #8fb9ff;
+
   /* Dark mode background variations */
-  --background-subtle: #1a1a1a;
-  --background-muted: #262626;
+  --background-subtle: #0f1b2d;
+  --background-muted: #19222f;
 }
 
 @layer base {
@@ -158,7 +182,7 @@
   
   body {
     @apply bg-background text-foreground;
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: var(--font-sans);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     font-variation-settings: normal;
     line-height: 1.6;
@@ -452,7 +476,7 @@
   .animate-fade-in {
     animation: fadeIn 300ms ease-out;
   }
-  
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -463,9 +487,30 @@
       transform: translateY(0);
     }
   }
-  
+
   .transition-anthropic {
     transition: all 150ms ease-out;
+  }
+
+  /* BlogForRef-inspired utilities */
+  .font-brand {
+    font-family: var(--font-brand);
+    font-weight: 400;
+  }
+
+  .text-gradient-blue {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .rounded-2xl {
+    border-radius: 1rem;
+  }
+
+  .rounded-3xl {
+    border-radius: 1.5rem;
   }
 }/* E
 nhanced prose styles for article content */

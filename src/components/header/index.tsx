@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { NavDesktopMenu } from "./nav-desktop-menu";
 import { NavMobileMenu } from "./nav-mobile-menu";
+import { ThemeToggle } from "@/components/theme-toggle";
 import GithubIcon from "@/components/icons/github";
 import XiaohongshuIcon from "@/components/icons/xiaohongshu";
 import XIcon from "@/components/icons/x";
@@ -31,13 +32,13 @@ export function Header() {
         </div>
 
         {/* Logo */}
-        <Link 
-          href="/" 
-          title="Home" 
+        <Link
+          href="/"
+          title="Home"
           className="flex items-center gap-3 transition-anthropic hover:opacity-80 md:order-first"
         >
           <SquareTerminal className="w-7 h-7 text-primary" />
-          <span className="hidden sm:inline-block font-semibold text-lg text-primary tracking-tight">
+          <span className="hidden sm:inline-block font-brand font-semibold text-lg text-primary tracking-tight">
             {config.site.title.split(' ')[0]}
           </span>
         </Link>
@@ -47,13 +48,14 @@ export function Header() {
           <NavDesktopMenu />
         </div>
 
-        {/* Right side social links */}
-        <div className="flex items-center space-x-1">
-          {socialLinks.map((link) => (
-            <Link 
-              key={link.title} 
-              href={link.href} 
-              title={link.title} 
+        {/* Right side actions */}
+        <div className="flex items-center gap-1">
+          {/* Social Links */}
+          {socialLinks.slice(0, 2).map((link) => (
+            <Link
+              key={link.title}
+              href={link.href}
+              title={link.title}
               className="inline-flex items-center justify-center w-9 h-9 rounded-md text-muted hover:text-primary hover:bg-subtle transition-anthropic"
             >
               <div className="w-5 h-5">
@@ -62,6 +64,12 @@ export function Header() {
               <span className="sr-only">{link.title}</span>
             </Link>
           ))}
+
+          {/* Separator */}
+          <div className="w-px h-6 bg-border mx-1" />
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
         </div>
       </div>
     </header>
