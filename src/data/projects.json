@@ -1,0 +1,29 @@
+[
+  {
+    "name": "ReadSmart Today",
+    "description": "AI-powered content collector and translator for Obsidian. Automatically fetch RSS feeds, web articles, and translate them with Claude AI.",
+    "tags": ["AI", "Obsidian", "Automation"],
+    "image": "/projects/readsmart-placeholder.jpg",
+    "url": "https://github.com/BreydanTan/ReadSmartToday",
+    "isShow": true,
+    "featured": true
+  },
+  {
+    "name": "AI SaaS Platform",
+    "description": "Building next-generation SaaS applications with AI integration. Modern full-stack development with Next.js 15 and React 19.",
+    "tags": ["SaaS", "AI", "Next.js"],
+    "image": "/projects/saas-placeholder.jpg",
+    "url": "#",
+    "isShow": true,
+    "featured": false
+  },
+  {
+    "name": "Enterprise Solutions",
+    "description": "Scalable enterprise systems with modern architecture. Focus on performance, security, and maintainability.",
+    "tags": ["Enterprise", "Architecture", "Full Stack"],
+    "image": "/projects/enterprise-placeholder.jpg",
+    "url": "#",
+    "isShow": true,
+    "featured": false
+  }
+]

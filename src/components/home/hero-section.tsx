@@ -1,23 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { AnimatedText } from "@/components/ui/animated-text";
 import { Button } from "@/components/ui/button";
+import { SocialCards } from "@/components/social-cards";
 import { config } from "@/lib/config";
 
 export function HeroSection() {
-  const socialLinks = [
-    { name: "buyMeACoffee", key: "buyMeACoffee", label: "Buy me a coffee" },
-    { name: "X", key: "x", label: "Follow on X" },
-    { name: "Linkedin", key: "linkedin", label: "Connect on LinkedIn" },
-  ]
-    .map((item) => ({
-      label: item.label,
-      href:
-        config.social && config.social[item.key as keyof typeof config.social],
-    }))
-    .filter((link) => !!link.href);
-
   return (
     <section className="min-h-[50vh] md:min-h-[60vh] flex items-center py-8 md:py-12 lg:py-20">
       <div className="w-full max-w-5xl mx-auto px-4 md:px-0">
@@ -38,37 +28,43 @@ export function HeroSection() {
               delay={0.3}
             />
 
-            {/* CTA Buttons */}
-            {socialLinks.length > 0 && (
-              <div className="flex flex-wrap gap-2 md:gap-3 pt-2 md:pt-4">
-                {socialLinks.slice(0, 2).map((link, index) => (
-                  <Link key={link.label} href={link.href}>
-                    <Button
-                      variant={index === 0 ? "default" : "outline"}
-                      size="lg"
-                      className="text-sm md:text-base transition-all hover:scale-105"
-                    >
-                      {link.label}
-                    </Button>
-                  </Link>
-                ))}
-              </div>
-            )}
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.5,
+                duration: 0.5,
+                type: "spring",
+                stiffness: 100,
+              }}
+              className="pt-2 md:pt-4"
+            >
+              <Link href={config.social?.x || "#"}>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="text-sm md:text-base transition-all hover:scale-105"
+                >
+                  Follow me on 𝕏
+                </Button>
+              </Link>
+            </motion.div>
 
-            {/* Social Links */}
-            {socialLinks.length > 0 && (
-              <div className="flex flex-wrap items-center gap-3 md:gap-4 pt-2">
-                {socialLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    href={link.href}
-                    className="text-xs md:text-sm text-muted hover:text-primary transition-colors font-medium"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            )}
+            {/* Social Cards with Animation */}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: 0.7,
+                duration: 0.6,
+                type: "spring",
+                stiffness: 100,
+              }}
+              className="pt-4"
+            >
+              <SocialCards />
+            </motion.div>
           </div>
 
           {/* Right Column - Featured Image/Card */}
