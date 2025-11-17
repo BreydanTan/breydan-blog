@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "GitHub",
+    "username": "BreydanTan",
+    "image": "https://avatars.githubusercontent.com/u/36994388?v=4",
+    "url": "https://github.com/BreydanTan"
+  },
+  {
+    "id": 2,
+    "name": "LinkedIn",
+    "username": "breydan",
+    "image": "https://media.licdn.com/dms/image/v2/D5603AQHccINn9TI4Kg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1716282280243?e=1756339200&v=beta&t=KbxNTy4l_8Q5NdEGBXY39cpofDZagj_M-GKeWkShC78",
+    "url": "https://www.linkedin.com/in/breydan/"
+  },
+  {
+    "id": 3,
+    "name": "X (Twitter)",
+    "username": "BreydanT94338",
+    "image": "https://pbs.twimg.com/profile_images/1800097879624728576/Wz3QLnzU_400x400.jpg",
+    "url": "https://x.com/BreydanT94338"
+  }
+]
